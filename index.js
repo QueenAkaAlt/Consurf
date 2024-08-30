@@ -37,7 +37,7 @@ app.get("/api/search", async (req, res) => {
           `https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&tags=${tags}&pid=${page}&json=1`
         );
         data = response.data;
-        if (page == 0) console.log("Sear hed for " + tags);
+        if (page == 0) console.log("Searhed for " + tags);
       }
     }
 
@@ -96,15 +96,11 @@ app.get(["/saves", "/loves", "/post/:id"], async (req, res) => {
   res.sendFile(filePath);
 });
 
-app.use("/js", express.static(path.join(__dirname, "site/js")));
-
-app.use("/css", express.static(path.join(__dirname, "site/css")));
-
-app.use("/media", express.static(path.join(__dirname, "site/media")));
-
 app.use(
   express.static(path.join(__dirname, "site", "html"), { extensions: ["html"] })
 );
+
+app.use(express.static(path.join(__dirname, "site")));
 
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "site/html/index.html"));
