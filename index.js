@@ -37,6 +37,7 @@ app.get("/api/search", async (req, res) => {
           `https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&tags=${tags}&pid=${page}&json=1`
         );
         data = response.data;
+        if (page == 0) console.log("Sear hed for " + tags);
       }
     }
 
@@ -67,6 +68,7 @@ app.get("/api/download/:id", async (req, res) => {
           res.status(500).send("An error occurred");
         } else {
           res.sendFile(path.join(__dirname, "/site/downloads", `${id}.png`));
+          console.log("Downloaded post " + id);
         }
       }
     );
