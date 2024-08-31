@@ -9,7 +9,7 @@
       name="og:description"
       content="Consurf is a Rule34 image viewing platform made to be easy to use, and much prettier than the original site" />
     <meta name="og:image" content="/media/icon.png" />
-    <link rel="prefetch" href="/media/logo.png" />
+    <link rel="preload" as="image" href="/media/logo.png" />
     <link rel="icon" type="image/png" href="/media/icon.png" />
     <link href="/css/index.css" rel="stylesheet" />
   </head>
@@ -29,41 +29,6 @@
       <div class="card">
         <h3>Search</h3>
         <p>
-          Blur 18+ posts
-          <span class="check">
-            <input type="checkbox" id="blur18" />
-            <label for="blur18"></label>
-          </span>
-        </p>
-        <p>
-          Blur 13+ posts
-          <span class="check">
-            <input type="checkbox" id="blur13" />
-            <label for="blur13"></label>
-          </span>
-        </p>
-        <p>
-          Blur safe posts
-          <span class="check">
-            <input type="checkbox" id="blurSafe" />
-            <label for="blurSafe"></label>
-          </span>
-        </p>
-        <p>
-          Tag autofill
-          <span class="check">
-            <input type="checkbox" id="tagAutofill" />
-            <label for="tagAutofill"></label>
-          </span>
-        </p>
-        <p>Tag blacklist</p>
-        <textarea
-          id="blacklist"
-          placeholder="Tags you don't want to see, seperated by a comma (,)"></textarea>
-      </div>
-      <div class="card">
-        <h3>Posts</h3>
-        <p>
           Hide 18+ posts
           <span class="check">
             <input type="checkbox" id="hide18" />
@@ -82,6 +47,41 @@
           <span class="check">
             <input type="checkbox" id="hideSafe" />
             <label for="hideSafe"></label>
+          </span>
+        </p>
+        <p>
+          Tag autofill
+          <span class="check">
+            <input type="checkbox" id="tagAutofill" />
+            <label for="tagAutofill"></label>
+          </span>
+        </p>
+        <p>Tag blacklist</p>
+        <textarea
+          id="blacklist"
+          placeholder="Tags you don't want to see, seperated by a comma (,)"></textarea>
+      </div>
+      <div class="card">
+        <h3>Posts</h3>
+        <p>
+          Blur 18+ posts
+          <span class="check">
+            <input type="checkbox" id="blur18" />
+            <label for="blur18"></label>
+          </span>
+        </p>
+        <p>
+          Blur 13+ posts
+          <span class="check">
+            <input type="checkbox" id="blur13" />
+            <label for="blur13"></label>
+          </span>
+        </p>
+        <p>
+          Blur safe posts
+          <span class="check">
+            <input type="checkbox" id="blurSafe" />
+            <label for="blurSafe"></label>
           </span>
         </p>
         <p>

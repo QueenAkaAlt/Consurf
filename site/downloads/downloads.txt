@@ -1,1 +1,4 @@
-Pron
+To do:
+- Comment viewer
+- Rearrange settings
+- Add new settings

@@ -45,15 +45,24 @@ fetch(`/api/search?id=${postId}`)
     postDownload.onclick = () => {
       downloadPost(type);
     };
-    const tagList = document.createElement("div");
-    tagList.classList.add("post-tags");
+    const tagsHolder = document.createElement("details");
+    tagsHolder.classList.add("post-tags");
+    const tagSummary = document.createElement("summary");
+    const tagList = document.createElement("span");
     console.log(post);
+    tagSummary.innerText = "Tags";
     post.tags.split(" ").forEach((tag) => {
       const tagItem = document.createElement("a");
       tagItem.innerText = tag;
       tagItem.href = `/posts/${tag}`;
       tagList.appendChild(tagItem);
     });
+
+    if (post.comment_count != 0) {
+    }
+
+    tagsHolder.appendChild(tagSummary);
+    tagsHolder.appendChild(tagList);
     actionButtons.appendChild(postLove);
     actionButtons.appendChild(postSave);
     postButtons.appendChild(actionButtons);
@@ -61,7 +70,7 @@ fetch(`/api/search?id=${postId}`)
     postItem.appendChild(postButtons);
     postHolder.appendChild(postItem);
     if (post.tags.length > 0 && settings.showTags)
-      postHolder.appendChild(tagList);
+      postHolder.appendChild(tagsHolder);
     document.body.appendChild(postHolder);
     if (loves.find((p) => p.id == postId))
       document.getElementById("love").src = "/media/love-active.png";

@@ -7,7 +7,8 @@ function rating(r) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("search").addEventListener("keydown", (e) => {
+  const searchbar = document.getElementById("search");
+  searchbar.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       let tags = e.target.value;
@@ -18,43 +19,20 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("tagList").remove();
     } else {
       if (!settings.tagAutofill) return;
-      const letters =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_-";
-      let searchValue = document.getElementById("search").value;
-      if (letters.includes(e.key)) searchValue += e.key;
-      if (e.key == "Backspace") searchValue = searchValue.slice(0, -1);
-      if (!searchValue || searchValue == null) {
-        if (document.getElementById("tagList"))
+      tagSearch(e);
+    }
+  });
+  searchbar.addEventListener("click", (e) => {
+    if (!settings.tagAutofill) return;
+    tagSearch(e);
+  });
+  setInterval(() => {
+    if (searchbar !== document.activeElement) {
+      setTimeout(() => {
+        if (document.getElementById("tagList")) {
           document.getElementById("tagList").remove();
-        return;
-      }
-      fetch(
-        `/api/search?t=tags&q=${
-          searchValue.split(" ")[searchValue.split(" ").length - 1]
-        }`
-      )
-        .then((res) => res.json())
-        .then((tags) => {
-          if (document.getElementById("tagList"))
-            document.getElementById("tagList").remove();
-          const tagList = document.createElement("div");
-          tagList.classList.add("tag-list");
-          tagList.id = "tagList";
-          tags.forEach((tag) => {
-            const tagItem = document.createElement("div");
-            tagItem.classList.add("tag-item");
-            tagItem.textContent = tag.label;
-            tagItem.addEventListener("click", () => {
-              let searchArray = searchValue.split(" ");
-              searchArray.pop();
-              searchArray.push(tag.value);
-              e.target.value = searchArray.join(" ");
-              tagList.remove();
-            });
-            tagList.appendChild(tagItem);
-          });
-          e.target.parentNode.appendChild(tagList);
-        });
+        }
+      }, 100);
     }
   });
 });
@@ -82,6 +60,19 @@ function search(tags) {
       const postHolder = document.createElement("div");
       postHolder.classList.add("posts");
       postHolder.id = "postHolder";
+      if (posts == "" || postLength == 0) {
+        const nothingMore = document.createElement("div");
+        nothingMore.classList.add("nothing-more");
+        const nothingIcon = document.createElement("img");
+        nothingIcon.src = "/media/nothing.png";
+        const nothingText = document.createElement("span");
+        nothingText.textContent = "Nothing More";
+        nothingMore.appendChild(nothingIcon);
+        nothingMore.appendChild(nothingText);
+        postHolder.appendChild(nothingMore);
+        document.body.appendChild(postHolder);
+        return;
+      }
       posts.forEach(async (post) => {
         const r = rating(post.rating);
         const postItem = document.createElement("a");
@@ -126,7 +117,7 @@ function search(tags) {
         postHolder.appendChild(postItem);
         postsDone++;
       });
-      const loadMore = document.createElement("div");
+      const loadMore = document.createElement("a");
       loadMore.classList.add("load-more");
       loadMore.onclick = () => {
         loadMore.remove();
@@ -163,6 +154,18 @@ function loadPage(tags, index = 1) {
       const postLength = posts.length;
       let postsDone = 0;
       const postHolder = document.getElementById("postHolder");
+      if (postLength == 0) {
+        const nothingMore = document.createElement("div");
+        nothingMore.classList.add("nothing-more");
+        const nothingIcon = document.createElement("img");
+        nothingIcon.src = "/media/nothing.png";
+        const nothingText = document.createElement("span");
+        nothingText.textContent = "Nothing More";
+        nothingMore.appendChild(nothingIcon);
+        nothingMore.appendChild(nothingText);
+        postHolder.appendChild(nothingMore);
+        return;
+      }
       posts.forEach(async (post) => {
         const r = rating(post.rating);
         const postItem = document.createElement("a");
@@ -207,7 +210,7 @@ function loadPage(tags, index = 1) {
         postHolder.appendChild(postItem);
         postsDone++;
       });
-      const loadMore = document.createElement("div");
+      const loadMore = document.createElement("a");
       loadMore.classList.add("load-more");
       loadMore.onclick = () => {
         loadMore.remove();
@@ -235,4 +238,45 @@ if (
   const replacedText = lastPart.replace(/\+/g, " ");
   searchBar.value = replacedText;
   search(replacedText);
+}
+
+function tagSearch(e) {
+  setTimeout(() => {
+    let searchValue = e.target.value;
+    searchValue = searchValue.trim();
+    if (!searchValue || searchValue == null || searchValue == "") {
+      if (document.getElementById("tagList")) {
+        document.getElementById("tagList").remove();
+        return;
+      }
+    }
+    fetch(
+      `/api/search?t=tags&q=${
+        searchValue.split(" ")[searchValue.split(" ").length - 1]
+      }`
+    )
+      .then((res) => res.json())
+      .then((tags) => {
+        if (document.getElementById("tagList"))
+          document.getElementById("tagList").remove();
+        const tagList = document.createElement("div");
+        tagList.classList.add("tag-list");
+        tagList.id = "tagList";
+        tags.forEach((tag) => {
+          const tagItem = document.createElement("div");
+          tagItem.classList.add("tag-item");
+          tagItem.textContent = tag.label;
+          tagItem.addEventListener("click", () => {
+            let searchArray = searchValue.split(" ");
+            searchArray.pop();
+            searchArray.push(tag.value);
+            e.target.value = searchArray.join(" ");
+            tagList.remove();
+            e.target.focus();
+          });
+          tagList.appendChild(tagItem);
+        });
+        e.target.parentNode.appendChild(tagList);
+      });
+  }, 100);
 }

@@ -15,6 +15,7 @@
   font-family: sans-serif;
   transition: all 0.1s ease-in-out;
   margin: 0;
+  user-select: none;
 }
 
 html {
@@ -154,12 +155,16 @@ nav a img {
 
 .post-full {
   min-width: 300px;
-  width: 100%;
+  width: calc(100% - 10px);
   max-width: 350px;
   position: absolute;
   top: 60px;
   left: 50%;
   transform: translateX(-50%);
+  background: var(--darker);
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 5px;
 }
 
 .post-full .item {
@@ -415,7 +420,7 @@ button {
   width: calc(100% - 10px);
 }
 
-.load-more {
+.load-more, .nothing-more {
   width: 150px;
   height: 150px;
   border-radius: 5px;
@@ -430,28 +435,38 @@ button {
   flex-direction: column;
 }
 
-.load-more img {
+.load-more img, .nothing-more img {
   width: 50px;
   margin: 5px;
 }
 
-.load-more span {
+.load-more span, .nothing-more span {
   font-size: 15px;
   font-weight: bold;
   color: var(--text);
 }
 
-.post-tags {
-  width: 100%;
-  height: fit-content;
+.nothing-more {
+  background: var(--darker);
 }
 
-.post-tags a {
+.post-tags {
+  width: calc(100% - 10px);
+  height: fit-content;
+  padding: 5px;
+  margin: 5px 0;
+}
+
+.post-tags summary {
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.post-tags span a {
   color: var(--text);
   text-decoration: none;
   margin: 2px;
-  background: var(--darker);
-  padding: 2px 5px;
+  padding: 2px;
   border-radius: 5px;
   display: inline-block;
 }
