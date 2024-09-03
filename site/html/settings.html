@@ -11,6 +11,10 @@
     <meta name="og:image" content="/media/icon.png" />
     <link rel="preload" as="image" href="/media/logo.png" />
     <link rel="icon" type="image/png" href="/media/icon.png" />
+    <link rel="preload" as="image" href="/media/love.png" />
+    <link rel="preload" as="image" href="/media/save.png" />
+    <link rel="preload" as="image" href="/media/settings.png" />
+    <link rel="preload" as="image" href="/media/github.png" />
     <link href="/css/index.css" rel="stylesheet" />
   </head>
   <body>
@@ -19,50 +23,25 @@
         <img src="/media/logo.png" alt="Logo" />
       </a>
       <div>
-        <a href="/posts">Posts</a>
-        <a href="/settings">Settings</a>
-        <a href="/loves">Favorites</a>
-        <a href="/saves">Saved</a>
+        <a href="https://github.com/QueenAkaAlt/Consurf">
+          <img src="/media/github.png" alt="Source Code" title="Source Code" />
+        </a>
+        <a href="/loves"
+          ><img
+            src="/media/love.png"
+            alt="Favorited Posts"
+            title="Favorited Posts"
+        /></a>
+        <a href="/saves"
+          ><img src="/media/save.png" alt="Saved Posts" title="Saved Posts"
+        /></a>
+        <a href="/settings"
+          ><img src="/media/settings.png" alt="Settings" title="Settings"
+        /></a>
       </div>
     </nav>
     <div class="cards">
       <div class="card">
-        <h3>Search</h3>
-        <p>
-          Hide 18+ posts
-          <span class="check">
-            <input type="checkbox" id="hide18" />
-            <label for="hide18"></label>
-          </span>
-        </p>
-        <p>
-          Hide 13+ posts
-          <span class="check">
-            <input type="checkbox" id="hide13" />
-            <label for="hide13"></label>
-          </span>
-        </p>
-        <p>
-          Hide safe posts
-          <span class="check">
-            <input type="checkbox" id="hideSafe" />
-            <label for="hideSafe"></label>
-          </span>
-        </p>
-        <p>
-          Tag autofill
-          <span class="check">
-            <input type="checkbox" id="tagAutofill" />
-            <label for="tagAutofill"></label>
-          </span>
-        </p>
-        <p>Tag blacklist</p>
-        <textarea
-          id="blacklist"
-          placeholder="Tags you don't want to see, seperated by a comma (,)"></textarea>
-      </div>
-      <div class="card">
-        <h3>Posts</h3>
         <p>
           Blur 18+ posts
           <span class="check">
@@ -85,17 +64,40 @@
           </span>
         </p>
         <p>
-          Show post information
-          <span class="check">
-            <input type="checkbox" id="showInfo" />
-            <label for="showInfo"></label>
-          </span>
-        </p>
-        <p>
           Unblur posts on mouse hover
           <span class="check">
             <input type="checkbox" id="unblurHover" />
             <label for="unblurHover"></label>
+          </span>
+        </p>
+        <hr />
+        <p>
+          Hide 18+ posts
+          <span class="check">
+            <input type="checkbox" id="hide18" />
+            <label for="hide18"></label>
+          </span>
+        </p>
+        <p>
+          Hide 13+ posts
+          <span class="check">
+            <input type="checkbox" id="hide13" />
+            <label for="hide13"></label>
+          </span>
+        </p>
+        <p>
+          Hide safe posts
+          <span class="check">
+            <input type="checkbox" id="hideSafe" />
+            <label for="hideSafe"></label>
+          </span>
+        </p>
+        <hr />
+        <p>
+          Show post information
+          <span class="check">
+            <input type="checkbox" id="showInfo" />
+            <label for="showInfo"></label>
           </span>
         </p>
         <p>
@@ -105,6 +107,32 @@
             <label for="showTags"></label>
           </span>
         </p>
+        <p>
+          Show post comments
+          <span class="check">
+            <input type="checkbox" id="showComments" />
+            <label for="showComments"></label>
+          </span>
+        </p>
+        <p>
+          Click image to zoom
+          <span class="check">
+            <input type="checkbox" id="clickZoom" />
+            <label for="clickZoom"></label>
+          </span>
+        </p>
+        <hr />
+        <p>
+          Tag autofill
+          <span class="check">
+            <input type="checkbox" id="tagAutofill" />
+            <label for="tagAutofill"></label>
+          </span>
+        </p>
+        <p>Tag blacklist</p>
+        <textarea
+          id="blacklist"
+          placeholder="Tags you don't want to see, seperated by a comma (,)"></textarea>
       </div>
       <div class="buttons">
         <div>

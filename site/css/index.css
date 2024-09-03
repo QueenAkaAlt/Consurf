@@ -91,6 +91,9 @@ nav a img {
   display: flex;
   flex-wrap: wrap;
   margin: auto;
+  height: fit-content;
+  max-height: calc(100vh - 210px);
+  overflow: auto;
 }
 
 .post {
@@ -385,6 +388,7 @@ input[type="checkbox"] {
   background: var(--text);
   border-radius: 2px;
   display: inline-block;
+  margin-top: 2px;
 }
 
 .check input:checked ~ label {
@@ -411,11 +415,10 @@ button {
 }
 
 .buttons {
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-width: 490px;
+  min-width: 290px;
   max-width: 490px;
   width: calc(100% - 10px);
 }
@@ -433,6 +436,7 @@ button {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  text-decoration: none;
 }
 
 .load-more img, .nothing-more img {
@@ -499,4 +503,9 @@ button {
 .popup button {
   margin-top: 5px;
   margin-right: 5px;
+}
+
+hr {
+  margin: 5px 0;
+  border: 1px solid var(--text);
 }

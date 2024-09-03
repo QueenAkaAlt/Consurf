@@ -64,9 +64,9 @@ function search(tags) {
         const nothingMore = document.createElement("div");
         nothingMore.classList.add("nothing-more");
         const nothingIcon = document.createElement("img");
-        nothingIcon.src = "/media/nothing.png";
+        nothingIcon.src = "/media/empty.png";
         const nothingText = document.createElement("span");
-        nothingText.textContent = "Nothing More";
+        nothingText.textContent = "Nothing Here";
         nothingMore.appendChild(nothingIcon);
         nothingMore.appendChild(nothingText);
         postHolder.appendChild(nothingMore);
@@ -119,6 +119,7 @@ function search(tags) {
       });
       const loadMore = document.createElement("a");
       loadMore.classList.add("load-more");
+      loadMore.href = "#page-2";
       loadMore.onclick = () => {
         loadMore.remove();
         loadPage(tags);
@@ -212,6 +213,7 @@ function loadPage(tags, index = 1) {
       });
       const loadMore = document.createElement("a");
       loadMore.classList.add("load-more");
+      loadMore.href = `#page-${newIndex}`;
       loadMore.onclick = () => {
         loadMore.remove();
         loadPage(tags, newIndex);

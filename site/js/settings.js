@@ -14,6 +14,8 @@ function save() {
     unblurHover: document.getElementById("unblurHover").checked,
     showInfo: document.getElementById("showInfo").checked,
     showTags: document.getElementById("showTags").checked,
+    showComments: document.getElementById("showTags").checked,
+    clickZoom: document.getElementById("showTags").checked,
   };
   set(ssettings);
   popup("Your settings have been saved!", [
@@ -49,6 +51,8 @@ function reset(a = true) {
       unblurHover: true,
       showInfo: true,
       showTags: true,
+      showComments: true,
+      clickZoom: true,
     };
     set(ssettings);
   }
@@ -66,6 +70,8 @@ function set(ssettings) {
   document.getElementById("unblurHover").checked = ssettings.unblurHover;
   document.getElementById("showInfo").checked = ssettings.showInfo;
   document.getElementById("showTags").checked = ssettings.showTags;
+  document.getElementById("showComments").checked = ssettings.showComments;
+  document.getElementById("clickZoom").checked = clickZoom;
   localStorage.setItem("settings", JSON.stringify(ssettings));
 }
 
@@ -82,6 +88,8 @@ function ex() {
     unblurHover: document.getElementById("unblurHover").checked,
     showInfo: document.getElementById("showInfo").checked,
     showTags: document.getElementById("showTags").checked,
+    showComments: document.getElementById("showComments").checked,
+    clickZoom: document.getElementById("clickZoom").checked,
   };
   const a = document.createElement("a");
   a.href = `data:application/json;charset=utf-8,${JSON.stringify(ssettings)}`;
@@ -127,6 +135,9 @@ function imp() {
         document.getElementById("unblurHover").checked = ssettings.unblurHover;
         document.getElementById("showInfo").checked = ssettings.showInfo;
         document.getElementById("showTags").checked = ssettings.showTags;
+        document.getElementById("showComments").checked =
+          ssettings.showComments;
+        document.getElementById("clickZoom").checked = ssettings.clickZoom;
       } catch (error) {
         popup("Invalid file content, unable to import settings", [
           { label: "Ok", function: () => killAnim(currPopup) },

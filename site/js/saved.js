@@ -17,6 +17,18 @@ if (document.getElementById("postHolder"))
 const postHolder = document.createElement("div");
 postHolder.classList.add("posts");
 postHolder.id = "postHolder";
+if (!posts || posts == null || posts == "") {
+  const nothingMore = document.createElement("div");
+  nothingMore.classList.add("nothing-more");
+  const nothingIcon = document.createElement("img");
+  nothingIcon.src = "/media/empty.png";
+  const nothingText = document.createElement("span");
+  nothingText.textContent = "Nothing Here";
+  nothingMore.appendChild(nothingIcon);
+  nothingMore.appendChild(nothingText);
+  postHolder.appendChild(nothingMore);
+  document.body.appendChild(postHolder);
+}
 posts.forEach(async (post) => {
   let t;
   if (post.type) t = "/media/image.png";
