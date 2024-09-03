@@ -37,7 +37,8 @@ app.get("/api/search", async (req, res) => {
           `https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&tags=${tags}&pid=${page}&json=1`
         );
         data = response.data;
-        if (page == 0) console.log("Searhed for " + tags);
+        if (page == 0)
+          log(`User ${req.socket.localAddress} searched for ${tags}`);
       }
     }
 
@@ -68,7 +69,7 @@ app.get("/api/download/:id", async (req, res) => {
           res.status(500).send("An error occurred");
         } else {
           res.sendFile(path.join(__dirname, "/site/downloads", `${id}.png`));
-          console.log("Downloaded post " + id);
+          log(`User ${req.socket.localAddress} downloaded post ${id}`);
         }
       }
     );
@@ -109,3 +110,22 @@ app.use((req, res) => {
 app.listen(port, () => {
   console.log("running");
 });
+
+function log(message) {
+  const newYorkDate = new Date();
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  });
+  const formattedDate = formatter.format(newYorkDate);
+  fs.appendFileSync(
+    path.join(__dirname, "site/media/logs.txt"),
+    `[${formattedDate}] ${message}\n`,
+    { encoding: "utf8" }
+  );
+}
