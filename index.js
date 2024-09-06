@@ -3,14 +3,18 @@ const axios = require("axios");
 const path = require("path");
 const fs = require("fs");
 const app = express();
+const xml2js = require("xml2js");
+const cheerio = require("cheerio");
 const port = 10000;
-const cors = require("cors");
-const corsOptions = {
-  origin: "*",
-  credentials: true,
-};
 
-app.use(cors(corsOptions));
+process.on("uncaughtException", (error) => {
+  log(error, "ERROR");
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+  log(reason, "ERROR");
+});
+
 app.use(express.json());
 
 app.get("/api/search", async (req, res) => {
@@ -28,17 +32,23 @@ app.get("/api/search", async (req, res) => {
       data = response.data;
     } else {
       if (id) {
-        const response = await axios.get(
+        const postRes = await axios.get(
           `https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&id=${id}&json=1`
         );
-        data = response.data[0];
+        const commentRes = await axios.get(
+          `https://api.rule34.xxx/index.php?page=dapi&s=comment&q=index&post_id=${id}`
+        );
+        data = postRes.data[0];
+        const comments = await xmlToJson(commentRes.data);
+        if (comments && comments.comments) {
+          data.comments = comments.comments.comment;
+        }
       } else {
         const response = await axios.get(
           `https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&tags=${tags}&pid=${page}&json=1`
         );
         data = response.data;
-        if (page == 0)
-          log(`User ${req.socket.localAddress} searched for ${tags}`);
+        if (page == 0) log(`Searched for ${tags}`);
       }
     }
 
@@ -69,7 +79,7 @@ app.get("/api/download/:id", async (req, res) => {
           res.status(500).send("An error occurred");
         } else {
           res.sendFile(path.join(__dirname, "/site/downloads", `${id}.png`));
-          log(`User ${req.socket.localAddress} downloaded post ${id}`);
+          log(`Downloaded post ${id}`);
         }
       }
     );
@@ -81,7 +91,7 @@ app.get("/api/download/:id", async (req, res) => {
       });
     }, 10000);
   } catch (error) {
-    console.error(error);
+    log(error, "ERROR");
     res.status(500).send("An error occurred");
   }
 });
@@ -108,10 +118,10 @@ app.use((req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("running");
+  log("Server started", "EVENT");
 });
 
-function log(message) {
+function log(message, type = "LOG") {
   const newYorkDate = new Date();
   const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/New_York",
@@ -123,9 +133,28 @@ function log(message) {
     day: "numeric",
   });
   const formattedDate = formatter.format(newYorkDate);
-  fs.appendFileSync(
-    path.join(__dirname, "site/media/logs.txt"),
-    `[${formattedDate}] ${message}\n`,
-    { encoding: "utf8" }
+  const $ = cheerio.load(
+    fs.readFileSync(path.join(__dirname, "site/html/logs.html"))
   );
+  $("body").append(
+    `<div class="log">\n\t<span class="time">${formattedDate}</span>\n\t<span class="msg">[${type}] ${message}</span>\n</div>\n`
+  );
+  fs.writeFileSync(path.join(__dirname, "site/html/logs.html"), $.html());
+}
+
+function xmlToJson(xml) {
+  return new Promise((resolve, reject) => {
+    xml2js.parseString(
+      xml,
+      { mergeAttrs: true, explicitArray: false },
+      (err, result) => {
+        if (err) {
+          log(err, "ERROR");
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
 }

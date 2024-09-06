@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Logs</title>
+    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="preload" as="image" href="/media/logo.png" />
+    <link rel="icon" type="image/png" href="/media/icon.png" />
+    <link rel="preload" as="image" href="/media/love.png" />
+    <link rel="preload" as="image" href="/media/save.png" />
+    <link rel="preload" as="image" href="/media/settings.png" />
+    <link rel="preload" as="image" href="/media/github.png" />
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        margin-top: 50px;
+      }
+
+      .log {
+        width: calc(100% - 10px);
+        height: fit-content;
+        position: relative;
+        color: #fff;
+        padding: 5px;
+        margin: 0;
+        line-height: 40px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .time {
+        color: rgba(255, 255, 255, 0.7);
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 5px;
+        font-size: 18px;
+      }
+
+      .log:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/">
+        <img src="/media/logo.png" alt="Logo" />
+      </a>
+      <div>
+        <a href="https://github.com/QueenAkaAlt/Consurf">
+          <img src="/media/github.png" alt="Source Code" title="Source Code" />
+        </a>
+        <a href="/loves"
+          ><img
+            src="/media/love.png"
+            alt="Favorited Posts"
+            title="Favorited Posts"
+        /></a>
+        <a href="/saves"
+          ><img src="/media/save.png" alt="Saved Posts" title="Saved Posts"
+        /></a>
+        <a href="/settings"
+          ><img src="/media/settings.png" alt="Settings" title="Settings"
+        /></a>
+      </div>
+    </nav>
+    <div class="log">
+      <span class="time">9/5/2024, 7:43:48 PM</span>
+      <span class="msg">[EVENT] Server started</span>
+    </div>
+  </body>
+</html>
