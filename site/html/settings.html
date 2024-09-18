@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Consurf | Settings</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="og:title" content="Consurf | Settings" />
+    <meta
+      name="og:description"
+      content="Consurf is a Rule34 image viewing platform made to be easy to use, and much prettier than the original site" />
+    <meta name="og:image" content="/media/icon.png" />
+    <link rel="preload" as="image" href="/media/logo.png" />
+    <link rel="icon" type="image/png" href="/media/icon.png" />
+    <link rel="preload" as="image" href="/media/love.png" />
+    <link rel="preload" as="image" href="/media/save.png" />
+    <link rel="preload" as="image" href="/media/settings.png" />
+    <link rel="preload" as="image" href="/media/github.png" />
+    <link href="/css/index.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav>
+      <a href="/">
+        <img src="/media/logo.png" alt="Logo" />
+      </a>
+      <div>
+        <a href="https://github.com/QueenAkaAlt/Consurf">
+          <img src="/media/github.png" alt="Source Code" title="Source Code" />
+        </a>
+        <a href="/loves"
+          ><img
+            src="/media/love.png"
+            alt="Favorited Posts"
+            title="Favorited Posts"
+        /></a>
+        <a href="/saves"
+          ><img src="/media/save.png" alt="Saved Posts" title="Saved Posts"
+        /></a>
+        <a href="/settings"
+          ><img src="/media/settings.png" alt="Settings" title="Settings"
+        /></a>
+      </div>
+    </nav>
+    <div class="cards">
+      <div class="card">
+        <p>
+          Blur 18+ posts
+          <span class="check">
+            <input type="checkbox" id="blur18" />
+            <label for="blur18"></label>
+          </span>
+        </p>
+        <p>
+          Blur 13+ posts
+          <span class="check">
+            <input type="checkbox" id="blur13" />
+            <label for="blur13"></label>
+          </span>
+        </p>
+        <p>
+          Blur safe posts
+          <span class="check">
+            <input type="checkbox" id="blurSafe" />
+            <label for="blurSafe"></label>
+          </span>
+        </p>
+        <p>
+          Unblur posts on mouse hover
+          <span class="check">
+            <input type="checkbox" id="unblurHover" />
+            <label for="unblurHover"></label>
+          </span>
+        </p>
+        <hr />
+        <p>
+          Hide 18+ posts
+          <span class="check">
+            <input type="checkbox" id="hide18" />
+            <label for="hide18"></label>
+          </span>
+        </p>
+        <p>
+          Hide 13+ posts
+          <span class="check">
+            <input type="checkbox" id="hide13" />
+            <label for="hide13"></label>
+          </span>
+        </p>
+        <p>
+          Hide safe posts
+          <span class="check">
+            <input type="checkbox" id="hideSafe" />
+            <label for="hideSafe"></label>
+          </span>
+        </p>
+        <hr />
+        <p>
+          Show post information
+          <span class="check">
+            <input type="checkbox" id="showInfo" />
+            <label for="showInfo"></label>
+          </span>
+        </p>
+        <p>
+          Show post tags
+          <span class="check">
+            <input type="checkbox" id="showTags" />
+            <label for="showTags"></label>
+          </span>
+        </p>
+        <p>
+          Show post comments
+          <span class="check">
+            <input type="checkbox" id="showComments" />
+            <label for="showComments"></label>
+          </span>
+        </p>
+        <p>
+          Click image to zoom
+          <span class="check">
+            <input type="checkbox" id="clickZoom" />
+            <label for="clickZoom"></label>
+          </span>
+        </p>
+        <hr />
+        <p>
+          Tag autofill
+          <span class="check">
+            <input type="checkbox" id="tagAutofill" />
+            <label for="tagAutofill"></label>
+          </span>
+        </p>
+        <p>Tag blacklist</p>
+        <textarea
+          id="blacklist"
+          placeholder="Tags you don't want to see, seperated by a comma (,)"></textarea>
+      </div>
+      <div class="buttons">
+        <div>
+          <button onclick="save()">Save</button>
+          <button onclick="reset()">Reset</button>
+        </div>
+        <div>
+          <button onclick="ex()">Export</button>
+          <button onclick="imp()">Import</button>
+        </div>
+      </div>
+    </div>
+    <script src="/js/global.js"></script>
+    <script src="/js/settings.js"></script>
+  </body>
+</html>
