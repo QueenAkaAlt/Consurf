@@ -17,17 +17,19 @@ fetch(`/api/search?id=${postId}`)
     postHolder.id = "postHolder";
     const postItem = document.createElement("div");
     postItem.classList.add("item");
+    let postMedia;
     if (type == true) {
-      const postImg = document.createElement("img");
-      postImg.src = post.file_url;
-      postItem.appendChild(postImg);
+      postMedia = document.createElement("img");
+      postMedia.src = post.file_url;
+      postMedia.onclick = () => {
+        fullImage(post.file_url);
+      };
     } else {
-      const postVideo = document.createElement("video");
-      postVideo.src = post.file_url;
-      postVideo.controls = true;
-      postVideo.loop = true;
-      postVideo.autoplay = true;
-      postItem.appendChild(postVideo);
+      postMedia = document.createElement("video");
+      postMedia.src = post.file_url;
+      postMedia.controls = true;
+      postMedia.loop = true;
+      postMedia.autoplay = true;
     }
     const postButtons = document.createElement("div");
     postButtons.classList.add("post-buttons");
@@ -49,7 +51,6 @@ fetch(`/api/search?id=${postId}`)
     tagsHolder.classList.add("post-tags");
     const tagSummary = document.createElement("summary");
     const tagList = document.createElement("span");
-    console.log(post);
     tagSummary.innerText = "Tags";
     post.tags.split(" ").forEach((tag) => {
       const tagItem = document.createElement("a");
@@ -58,7 +59,27 @@ fetch(`/api/search?id=${postId}`)
       tagList.appendChild(tagItem);
     });
 
-    if (post.comment_count != 0) {
+    let commentHolder;
+    if (post.comment_count != 0 && settings.showComments) {
+      commentHolder = document.createElement("details");
+      commentHolder.classList.add("post-comments");
+      const commentSummary = document.createElement("summary");
+      commentSummary.innerText = "Comments";
+      commentHolder.appendChild(commentSummary);
+      const commentList = document.createElement("div");
+      post.comments.forEach((comment) => {
+        const commentDiv = document.createElement("div");
+        commentDiv.classList = "comment";
+        const commentUser = document.createElement("div");
+        commentUser.classList = "user";
+        commentUser.innerText = comment.creator;
+        const commentBody = document.createElement("div");
+        commentBody.innerText = comment.body;
+        commentDiv.appendChild(commentUser);
+        commentDiv.appendChild(commentBody);
+        commentList.appendChild(commentDiv);
+        commentHolder.appendChild(commentList);
+      });
     }
 
     tagsHolder.appendChild(tagSummary);
@@ -67,15 +88,23 @@ fetch(`/api/search?id=${postId}`)
     actionButtons.appendChild(postSave);
     postButtons.appendChild(actionButtons);
     postButtons.appendChild(postDownload);
+    postItem.appendChild(postMedia);
     postItem.appendChild(postButtons);
     postHolder.appendChild(postItem);
     if (post.tags.length > 0 && settings.showTags)
       postHolder.appendChild(tagsHolder);
+    if (post.comment_count != 0 && settings.showComments) {
+      postHolder.appendChild(commentHolder);
+    }
     document.body.appendChild(postHolder);
     if (loves.find((p) => p.id == postId))
       document.getElementById("love").src = "/media/love-active.png";
     if (saves.find((p) => p.id == postId))
       document.getElementById("save").src = "/media/save-active.png";
+    postHolder.style.width = postMedia.offsetWidth + "px";
+    setInterval(() => {
+      postHolder.style.width = postMedia.offsetWidth + "px";
+    });
   });
 
 function lovePost() {
@@ -88,7 +117,6 @@ function lovePost() {
       id: postId,
       preview: postData.preview_url,
       rating: postData.rating,
-      type: postData.type,
     });
     localStorage.setItem("loves", JSON.stringify(loves));
     document.getElementById("love").src = "/media/love-active.png";
@@ -105,7 +133,6 @@ function savePost() {
       id: postId,
       preview: postData.preview_url,
       rating: postData.rating,
-      type: postData.type,
     });
     localStorage.setItem("saves", JSON.stringify(saves));
     document.getElementById("save").src = "/media/save-active.png";
@@ -115,7 +142,12 @@ function savePost() {
 function downloadPost(type) {
   fetch(`/api/download/${postId}`).then(async (res) => {
     if (res.status == 500) {
-      alert("Something went wrong");
+      popup("Something went wrong while downloading the post", {
+        label: "Ok",
+        function: () => {
+          killAnim(currPopup);
+        },
+      });
       return;
     }
     const blob = await res.blob();
@@ -131,9 +163,32 @@ function downloadPost(type) {
 
 function imageExists(url) {
   return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => resolve(true);
-    img.onerror = () => resolve(false);
-    img.src = url;
+    const videoFormats = [
+      ".mp4",
+      ".avi",
+      ".mov",
+      ".wmv",
+      ".flv",
+      ".mkv",
+      ".webm",
+      ".ogv",
+      ".mpeg",
+      ".m4v",
+      ".qt",
+      ".divx",
+      ".asf",
+      ".rmvb",
+      ".vp9",
+      ".vp8",
+      ".ogg",
+    ];
+    videoFormats.forEach((f) => {
+      if (url.endsWith(f)) resolve(false);
+    });
+    resolve(true);
   });
+}
+
+function fullImage(url) {
+  if (settings.clickZoom) window.open(url, "_blank");
 }

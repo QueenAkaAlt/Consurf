@@ -15,6 +15,8 @@ if (localStorage.getItem("settings")) {
     unblurHover: true,
     showInfo: true,
     showTags: true,
+    showComments: true,
+    clickZoom: true,
   };
 }
 function popup(content, buttons) {

@@ -139,10 +139,30 @@ function search(tags) {
 
 function imageExists(url) {
   return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => resolve("/media/image.png");
-    img.onerror = () => resolve("/media/video.png");
-    img.src = url;
+    if (url.endsWith(".gif")) resolve("/media/gif.png");
+    const videoFormats = [
+      ".mp4",
+      ".avi",
+      ".mov",
+      ".wmv",
+      ".flv",
+      ".mkv",
+      ".webm",
+      ".ogv",
+      ".mpeg",
+      ".m4v",
+      ".qt",
+      ".divx",
+      ".asf",
+      ".rmvb",
+      ".vp9",
+      ".vp8",
+      ".ogg",
+    ];
+    videoFormats.forEach((f) => {
+      if (url.endsWith(f)) resolve("/media/video.png");
+    });
+    resolve("/media/image.png");
   });
 }
 
@@ -273,8 +293,10 @@ function tagSearch(e) {
             searchArray.pop();
             searchArray.push(tag.value);
             e.target.value = searchArray.join(" ");
-            tagList.remove();
             e.target.focus();
+            setTimeout(() => {
+              tagList.remove();
+            }, 100);
           });
           tagList.appendChild(tagItem);
         });

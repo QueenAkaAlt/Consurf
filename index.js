@@ -137,7 +137,7 @@ function log(message, type = "LOG") {
     fs.readFileSync(path.join(__dirname, "site/html/logs.html"))
   );
   $("body").append(
-    `<div class="log">\n\t<span class="time">${formattedDate}</span>\n\t<span class="msg">[${type}] ${message}</span>\n</div>\n`
+    `<div class="log">\n\t<span class="time"><div>[${type}]</div><div>${formattedDate}</div></span>\n\t<span class="msg">${message}</span>\n</div>\n`
   );
   fs.writeFileSync(path.join(__dirname, "site/html/logs.html"), $.html());
 }

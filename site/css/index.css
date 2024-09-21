@@ -5,6 +5,7 @@
   --text-dark: #121212;
   --text-light: #777777;
   --darker: rgba(0, 0, 0, 0.3);
+  --lighter: rgba(255, 255, 255, 0.2);
   --success: #00a400;
   --warning: #eddd12;
   --error: #d70000;
@@ -34,9 +35,8 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: calc(100% - 10px);
+  width: 100%;
   height: 50px;
-  padding: 0 5px;
   position: fixed;
   top: 0;
   left: 0;
@@ -157,17 +157,12 @@ nav a img {
 }
 
 .post-full {
-  min-width: 300px;
-  width: calc(100% - 10px);
-  max-width: 350px;
-  position: absolute;
-  top: 60px;
-  left: 50%;
-  transform: translateX(-50%);
   background: var(--darker);
   border-radius: 10px;
   overflow: hidden;
   padding: 5px;
+  margin: 5px auto;
+  max-width: calc(100vw - 10px);
 }
 
 .post-full .item {
@@ -177,8 +172,9 @@ nav a img {
 }
 
 .post-full .item img, .post-full .item video {
-  width: 100%;
   border-radius: 5px;
+  max-height: calc(100vh - 70px);
+  max-width: calc(100vw - 10px);
 }
 
 .post-full .post-buttons {
@@ -196,6 +192,10 @@ nav a img {
 
 .post-full .post-buttons img:active {
   transform: scale(0.9);
+}
+
+.post-full .post-tags {
+  width: 100%;
 }
 
 textarea {
@@ -454,14 +454,14 @@ button {
   background: var(--darker);
 }
 
-.post-tags {
+.post-tags, .post-comments {
   width: calc(100% - 10px);
   height: fit-content;
   padding: 5px;
   margin: 5px 0;
 }
 
-.post-tags summary {
+.post-tags summary, .post-comments summary {
   font-weight: bold;
   font-size: 17px;
 }
@@ -508,4 +508,18 @@ button {
 hr {
   margin: 5px 0;
   border: 1px solid var(--text);
+}
+
+.post-full .post-comments .comment {
+  display: block;
+  width: calc(100% - 5px);
+  padding: 10px 2.5px;
+}
+
+.post-full .post-comments .comment .user {
+  font-weight: bold;
+}
+
+.post-full .post-comments .comment:hover {
+  background: var(--lighter)
 }

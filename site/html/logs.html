@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html>
-  <head>
+<!DOCTYPE html><html><head>
     <title>Logs</title>
-    <link rel="stylesheet" href="/css/index.css" />
-    <link rel="preload" as="image" href="/media/logo.png" />
-    <link rel="icon" type="image/png" href="/media/icon.png" />
-    <link rel="preload" as="image" href="/media/love.png" />
-    <link rel="preload" as="image" href="/media/save.png" />
-    <link rel="preload" as="image" href="/media/settings.png" />
-    <link rel="preload" as="image" href="/media/github.png" />
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="preload" as="image" href="/media/logo.png">
+    <link rel="icon" type="image/png" href="/media/icon.png">
+    <link rel="preload" as="image" href="/media/love.png">
+    <link rel="preload" as="image" href="/media/save.png">
+    <link rel="preload" as="image" href="/media/settings.png">
+    <link rel="preload" as="image" href="/media/github.png">
     <style>
       body {
         padding: 0;
@@ -23,20 +21,23 @@
         height: fit-content;
         position: relative;
         color: #fff;
-        padding: 5px;
+        padding: 10px 5px;
         margin: 0;
-        line-height: 40px;
         font-size: 20px;
         font-weight: bold;
       }
 
       .time {
-        color: rgba(255, 255, 255, 0.7);
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        right: 5px;
         font-size: 18px;
+        display: block;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .time div {
+        color: rgba(255, 255, 255, 0.7);
       }
 
       .log:hover {
@@ -47,25 +48,91 @@
   <body>
     <nav>
       <a href="/">
-        <img src="/media/logo.png" alt="Logo" />
+        <img src="/media/logo.png" alt="Logo">
       </a>
       <div>
+        <a href="/loves"><img src="/media/love.png" alt="Favorited Posts" title="Favorited Posts"></a>
+        <a href="/saves"><img src="/media/save.png" alt="Saved Posts" title="Saved Posts"></a>
+        <a href="/settings"><img src="/media/settings.png" alt="Settings" title="Settings"></a>
         <a href="https://github.com/QueenAkaAlt/Consurf">
-          <img src="/media/github.png" alt="Source Code" title="Source Code" />
+          <img src="/media/github.png" alt="Source Code" title="Source Code">
         </a>
-        <a href="/loves"
-          ><img
-            src="/media/love.png"
-            alt="Favorited Posts"
-            title="Favorited Posts"
-        /></a>
-        <a href="/saves"
-          ><img src="/media/save.png" alt="Saved Posts" title="Saved Posts"
-        /></a>
-        <a href="/settings"
-          ><img src="/media/settings.png" alt="Settings" title="Settings"
-        /></a>
       </div>
     </nav>
-  </body>
-</html>
+
+    <div class="log">
+      <span class="time"><div>[EVENT]</div>
+        <div>9/21/2024, 12:27:56 PM</div></span>
+      <span class="msg">Server started</span>
+    </div>
+  
+
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 12:33:56 PM</div></span>
+	<span class="msg">Searched for video</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 12:45:08 PM</div></span>
+	<span class="msg">Searched for image</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 12:45:08 PM</div></span>
+	<span class="msg">Searched for image</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 12:45:31 PM</div></span>
+	<span class="msg">Searched for image</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 1:10:01 PM</div></span>
+	<span class="msg">Searched for gif</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 1:13:00 PM</div></span>
+	<span class="msg">Searched for gif</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 1:13:19 PM</div></span>
+	<span class="msg">Searched for gif</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 1:13:45 PM</div></span>
+	<span class="msg">Searched for gif</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 1:14:22 PM</div></span>
+	<span class="msg">Searched for gif</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 1:16:27 PM</div></span>
+	<span class="msg">Searched for emily_(hazbin_hotel)</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 1:24:02 PM</div></span>
+	<span class="msg">Searched for new</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 1:24:12 PM</div></span>
+	<span class="msg">Searched for sonic_(series)</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 1:31:24 PM</div></span>
+	<span class="msg">Searched for salad_fingers</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 1:37:01 PM</div></span>
+	<span class="msg">Searched for *</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 1:37:57 PM</div></span>
+	<span class="msg">Searched for lnhalerichard</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 2:12:13 PM</div></span>
+	<span class="msg">Searched for cede_(lefauxcreux)</span>
+</div>
+<div class="log">
+	<span class="time"><div>[LOG]</div><div>9/21/2024, 2:12:31 PM</div></span>
+	<span class="msg">Searched for creux</span>
+</div>
+</body></html>

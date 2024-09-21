@@ -30,9 +30,7 @@ if (!posts || posts == null || posts == "") {
   document.body.appendChild(postHolder);
 }
 posts.forEach(async (post) => {
-  let t;
-  if (post.type) t = "/media/image.png";
-  else t = "/media/video.png";
+  const t = await imageExists(post.preview);
   const r = rating(post.rating);
   const postItem = document.createElement("a");
   postItem.classList.add("post");
@@ -83,4 +81,33 @@ function rating(r) {
   const colors = ["success", "warning", "error"];
   const rating = short[ratings.indexOf(r)];
   return { rating: rating, color: colors[ratings.indexOf(r)] };
+}
+
+function imageExists(url) {
+  return new Promise((resolve) => {
+    if (url.endsWith(".gif")) resolve("/media/gif.png");
+    const videoFormats = [
+      ".mp4",
+      ".avi",
+      ".mov",
+      ".wmv",
+      ".flv",
+      ".mkv",
+      ".webm",
+      ".ogv",
+      ".mpeg",
+      ".m4v",
+      ".qt",
+      ".divx",
+      ".asf",
+      ".rmvb",
+      ".vp9",
+      ".vp8",
+      ".ogg",
+    ];
+    videoFormats.forEach((f) => {
+      if (url.endsWith(f)) resolve("/media/video.png");
+    });
+    resolve("/media/image.png");
+  });
 }
