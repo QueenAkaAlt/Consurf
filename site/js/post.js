@@ -60,7 +60,7 @@ fetch(`/api/search?id=${postId}`)
     });
 
     let commentHolder;
-    if (post.comment_count != 0 && settings.showComments) {
+    if (post.comment_count != 0 && settings.showComments && post.comments) {
       commentHolder = document.createElement("details");
       commentHolder.classList.add("post-comments");
       const commentSummary = document.createElement("summary");
@@ -93,7 +93,7 @@ fetch(`/api/search?id=${postId}`)
     postHolder.appendChild(postItem);
     if (post.tags.length > 0 && settings.showTags)
       postHolder.appendChild(tagsHolder);
-    if (post.comment_count != 0 && settings.showComments) {
+    if (post.comment_count != 0 && settings.showComments && post.comments) {
       postHolder.appendChild(commentHolder);
     }
     document.body.appendChild(postHolder);
