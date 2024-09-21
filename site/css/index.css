@@ -514,6 +514,7 @@ hr {
   display: block;
   width: calc(100% - 5px);
   padding: 10px 2.5px;
+  border-radius: 2.5px;
 }
 
 .post-full .post-comments .comment .user {

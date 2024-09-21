@@ -22,7 +22,6 @@ app.get("/api/search", async (req, res) => {
   const page = parseInt(req.query.p || 0);
   const id = req.query.id || "";
   const type = req.query.t || "post";
-
   try {
     let data;
     if (type == "tags") {
@@ -54,8 +53,8 @@ app.get("/api/search", async (req, res) => {
 
     res.json(data);
   } catch (error) {
-    console.error(error);
-    res.status(500).send("An error occurred");
+    log(error, "ERROR");
+    res.status(500).json({ error: "Failed to fetch post" });
   }
 });
 

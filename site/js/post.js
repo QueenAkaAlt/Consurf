@@ -9,6 +9,7 @@ let postData;
 fetch(`/api/search?id=${postId}`)
   .then((res) => res.json())
   .then(async (post) => {
+    if (post.error) return window.history.back();
     const type = await imageExists(post.file_url);
     postData = post;
     postData.type = type;

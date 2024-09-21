@@ -53,87 +53,13 @@ function search(tags) {
   fetch("/api/search?q=" + tags)
     .then((res) => res.json())
     .then(async (posts) => {
-      const postLength = posts.length;
-      let postsDone = 0;
       if (document.getElementById("postHolder"))
         document.getElementById("postHolder").remove();
       const postHolder = document.createElement("div");
       postHolder.classList.add("posts");
       postHolder.id = "postHolder";
-      if (posts == "" || postLength == 0) {
-        const nothingMore = document.createElement("div");
-        nothingMore.classList.add("nothing-more");
-        const nothingIcon = document.createElement("img");
-        nothingIcon.src = "/media/empty.png";
-        const nothingText = document.createElement("span");
-        nothingText.textContent = "Nothing Here";
-        nothingMore.appendChild(nothingIcon);
-        nothingMore.appendChild(nothingText);
-        postHolder.appendChild(nothingMore);
-        document.body.appendChild(postHolder);
-        return;
-      }
-      posts.forEach(async (post) => {
-        const r = rating(post.rating);
-        const postItem = document.createElement("a");
-        postItem.classList.add("post");
-        postItem.id = post.id;
-        postItem.href = `/post/${post.id}`;
-        const postImg = document.createElement("img");
-        postImg.classList.add("img");
-        postImg.src = post.preview_url;
-        const postInfo = document.createElement("div");
-        postInfo.classList.add("post-info");
-        if (settings.unblurHover) {
-          postInfo.classList.add("unblur");
-        }
-        const postRating = document.createElement("span");
-        postRating.textContent = r.rating;
-        postRating.style.color = `var(--${r.color})`;
-        const postType = document.createElement("img");
-        postType.src = await imageExists(post.file_url);
-        postInfo.appendChild(postRating);
-        postInfo.appendChild(postType);
-        postItem.appendChild(postImg);
-        postItem.appendChild(postInfo);
-        if (!settings.showInfo) {
-          postRating.remove();
-          postType.remove();
-          if (
-            (r.rating == "18+" && !settings.blur18) ||
-            (r.rating == "13+" && !settings.blur13) ||
-            (r.rating == "safe" && !settings.blurSafe)
-          ) {
-            postInfo.remove();
-          }
-        }
-        if (
-          (r.rating == "18+" && settings.blur18) ||
-          (r.rating == "13+" && settings.blur13) ||
-          (r.rating == "safe" && settings.blurSafe)
-        ) {
-          postInfo.classList.add("full-blur");
-        }
-        postHolder.appendChild(postItem);
-        postsDone++;
-      });
-      const loadMore = document.createElement("a");
-      loadMore.classList.add("load-more");
-      loadMore.href = "#page-2";
-      loadMore.onclick = () => {
-        loadMore.remove();
-        loadPage(tags);
-      };
-      const loadIcon = document.createElement("img");
-      loadIcon.src = "/media/load.png";
-      const loadText = document.createElement("span");
-      loadText.textContent = "Load More";
-      loadMore.appendChild(loadIcon);
-      loadMore.appendChild(loadText);
       document.body.appendChild(postHolder);
-      while (postsDone < postLength)
-        await new Promise((resolve) => setTimeout(resolve, 100));
-      postHolder.appendChild(loadMore);
+      handlePosts(tags, posts);
     });
 }
 
@@ -172,81 +98,8 @@ function loadPage(tags, index = 1) {
   fetch(`/api/search?t=posts&q=${tags}&p=${index}`)
     .then((res) => res.json())
     .then(async (posts) => {
-      const postLength = posts.length;
-      let postsDone = 0;
       const postHolder = document.getElementById("postHolder");
-      if (postLength == 0) {
-        const nothingMore = document.createElement("div");
-        nothingMore.classList.add("nothing-more");
-        const nothingIcon = document.createElement("img");
-        nothingIcon.src = "/media/nothing.png";
-        const nothingText = document.createElement("span");
-        nothingText.textContent = "Nothing More";
-        nothingMore.appendChild(nothingIcon);
-        nothingMore.appendChild(nothingText);
-        postHolder.appendChild(nothingMore);
-        return;
-      }
-      posts.forEach(async (post) => {
-        const r = rating(post.rating);
-        const postItem = document.createElement("a");
-        postItem.classList.add("post");
-        postItem.id = post.id;
-        postItem.href = `/post/${post.id}`;
-        const postImg = document.createElement("img");
-        postImg.classList.add("img");
-        postImg.src = post.preview_url;
-        const postInfo = document.createElement("div");
-        postInfo.classList.add("post-info");
-        if (settings.unblurHover) {
-          postInfo.classList.add("unblur");
-        }
-        const postRating = document.createElement("span");
-        postRating.textContent = r.rating;
-        postRating.style.color = `var(--${r.color})`;
-        const postType = document.createElement("img");
-        postType.src = await imageExists(post.file_url);
-        postInfo.appendChild(postRating);
-        postInfo.appendChild(postType);
-        postItem.appendChild(postImg);
-        postItem.appendChild(postInfo);
-        if (!settings.showInfo) {
-          postRating.remove();
-          postType.remove();
-          if (
-            (r.rating == "18+" && !settings.blur18) ||
-            (r.rating == "13+" && !settings.blur13) ||
-            (r.rating == "safe" && !settings.blurSafe)
-          ) {
-            postInfo.remove();
-          }
-        }
-        if (
-          (r.rating == "18+" && settings.blur18) ||
-          (r.rating == "13+" && settings.blur13) ||
-          (r.rating == "safe" && settings.blurSafe)
-        ) {
-          postInfo.classList.add("full-blur");
-        }
-        postHolder.appendChild(postItem);
-        postsDone++;
-      });
-      const loadMore = document.createElement("a");
-      loadMore.classList.add("load-more");
-      loadMore.href = `#page-${newIndex}`;
-      loadMore.onclick = () => {
-        loadMore.remove();
-        loadPage(tags, newIndex);
-      };
-      const loadIcon = document.createElement("img");
-      loadIcon.src = "/media/load.png";
-      const loadText = document.createElement("span");
-      loadText.textContent = "Load More";
-      loadMore.appendChild(loadIcon);
-      loadMore.appendChild(loadText);
-      while (postsDone < postLength)
-        await new Promise((resolve) => setTimeout(resolve, 100));
-      postHolder.appendChild(loadMore);
+      handlePosts(tags, posts, newIndex);
     });
 }
 
@@ -303,4 +156,95 @@ function tagSearch(e) {
         e.target.parentNode.appendChild(tagList);
       });
   }, 100);
+}
+
+async function handlePosts(tags, posts, page = 0) {
+  const postLength = posts.length;
+  let postsDone = 0;
+  if (posts == "" || postLength == 0) {
+    const nothingMore = document.createElement("div");
+    nothingMore.classList.add("nothing-more");
+    const nothingIcon = document.createElement("img");
+    nothingIcon.src = "/media/empty.png";
+    const nothingText = document.createElement("span");
+    nothingText.textContent = "Nothing Here";
+    nothingMore.appendChild(nothingIcon);
+    nothingMore.appendChild(nothingText);
+    postHolder.appendChild(nothingMore);
+    return;
+  }
+  posts.forEach(async (post, i) => {
+    const r = rating(post.rating);
+    const postItem = document.createElement("a");
+    postItem.classList.add("post");
+    postItem.id = post.id;
+    postItem.href = `/post/${post.id}`;
+    const postImg = document.createElement("img");
+    postImg.classList.add("img");
+    postImg.src = post.preview_url;
+    const postInfo = document.createElement("div");
+    postInfo.classList.add("post-info");
+    if (settings.unblurHover) {
+      postInfo.classList.add("unblur");
+    }
+    const postRating = document.createElement("span");
+    postRating.textContent = r.rating;
+    postRating.style.color = `var(--${r.color})`;
+    const postType = document.createElement("img");
+    postType.src = await imageExists(post.file_url);
+    postInfo.appendChild(postRating);
+    postInfo.appendChild(postType);
+    postItem.appendChild(postImg);
+    postItem.appendChild(postInfo);
+    if (!settings.showInfo) {
+      postRating.remove();
+      postType.remove();
+      if (
+        (r.rating == "18+" && !settings.blur18) ||
+        (r.rating == "13+" && !settings.blur13) ||
+        (r.rating == "safe" && !settings.blurSafe)
+      ) {
+        postInfo.remove();
+      }
+    }
+    if (
+      (r.rating == "18+" && settings.blur18) ||
+      (r.rating == "13+" && settings.blur13) ||
+      (r.rating == "safe" && settings.blurSafe)
+    ) {
+      postInfo.classList.add("full-blur");
+    }
+    postHolder.appendChild(postItem);
+    postsDone++;
+  });
+  if (postLength < 100) {
+    const nothingMore = document.createElement("div");
+    nothingMore.classList.add("nothing-more");
+    const nothingIcon = document.createElement("img");
+    nothingIcon.src = "/media/nothing.png";
+    const nothingText = document.createElement("span");
+    nothingText.textContent = "Nothing More";
+    nothingMore.appendChild(nothingIcon);
+    nothingMore.appendChild(nothingText);
+    while (postsDone < postLength)
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    postHolder.appendChild(nothingMore);
+  } else {
+    const loadMore = document.createElement("a");
+    loadMore.classList.add("load-more");
+    loadMore.href = `#page-${page + 2}`;
+    loadMore.onclick = () => {
+      loadMore.remove();
+      loadPage(tags, page);
+    };
+    const loadIcon = document.createElement("img");
+    loadIcon.src = "/media/load.png";
+    const loadText = document.createElement("span");
+    loadText.textContent = "Load More";
+    loadMore.appendChild(loadIcon);
+    loadMore.appendChild(loadText);
+    while (postsDone < postLength)
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    postHolder.appendChild(loadMore);
+  }
 }
