@@ -162,7 +162,7 @@ nav a img {
   overflow: hidden;
   padding: 5px;
   margin: 5px auto;
-  max-width: calc(100vw - 10px);
+  max-width: calc(100vw - 20px);
 }
 
 .post-full .item {
@@ -174,7 +174,7 @@ nav a img {
 .post-full .item img, .post-full .item video {
   border-radius: 5px;
   max-height: calc(100vh - 70px);
-  max-width: calc(100vw - 10px);
+  max-width: calc(100vw - 20px);
 }
 
 .post-full .post-buttons {
@@ -372,27 +372,46 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 5px 0;
 }
 
-input[type="checkbox"] {
-  float: right;
-}
-
-.check input {
-  display: none;
+input[type=checkbox] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
 }
 
 .check label {
-  width: 15px;
-  height: 15px;
-  background: var(--text);
-  border-radius: 2px;
-  display: inline-block;
-  margin-top: 2px;
+  cursor: pointer;
+  text-indent: -9999px;
+  width: 35px;
+  height: 20px;
+  background: var(--text-light);
+  display: block;
+  border-radius: 100px;
+  position: relative;
+  float: right;
 }
 
-.check input:checked ~ label {
+.check label:after {
+  content: '';
+  position: absolute;
+  top: 2.5px;
+  left: 2.5px;
+  width: 15px;
+  height: 15px;
+  background: #fff;
+  border-radius: 90px;
+  transition: 0.2s;
+}
+
+input:checked+label {
   background: var(--main);
+}
+
+input:checked+label:after {
+  left: calc(100% - 2.5px);
+  transform: translateX(-100%);
 }
 
 .cards {
@@ -412,6 +431,20 @@ button {
   color: var(--text);
   border-radius: 5px;
   display: inline-block;
+}
+
+.upload label {
+  font-size: 15px;
+  padding: 2.5px 5px;
+  border: none;
+  background: var(--main);
+  color: var(--text);
+  border-radius: 5px;
+  display: inline-block;
+}
+
+button:active, .upload label:active {
+  transform: scale(0.9);
 }
 
 .buttons {
@@ -444,10 +477,21 @@ button {
   margin: 5px;
 }
 
+.fill.nothing-more img {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: cover;
+}
+
 .load-more span, .nothing-more span {
   font-size: 15px;
   font-weight: bold;
   color: var(--text);
+}
+
+.fill.nothing-more span, .no-name.nothing-more span {
+  display: none;
 }
 
 .nothing-more {
@@ -476,14 +520,13 @@ button {
 }
 
 .popup-bg {
-  background: var(--darker);
+  background: rgba(0, 0, 0, 0.7);
   width: 100%;
   height: 100%;
   position: fixed;
   top: 0;
   left: 0;
-  backdrop-filter: blur(5px);
-  z-index: 100000;
+  z-index: 50;
 }
 
 .popup {
@@ -498,6 +541,7 @@ button {
   border-radius: 10px;
   font-size: 16px;
   font-weight: bold;
+  position: relative;
 }
 
 .popup button {
@@ -523,4 +567,84 @@ hr {
 
 .post-full .post-comments .comment:hover {
   background: var(--lighter)
+}
+
+.upload input {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+
+.card input[type="text"] {
+  width: 100px;
+  height: 15px;
+  padding: 2.5px;
+  border-radius: 2.5px;
+  margin: 0;
+  font-size: 14px;
+  min-width: unset;
+}
+
+.card button {
+  width: 100%;
+  margin: 5px 0;
+}
+
+.nothing-more.list::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  background-color: var(--darker);
+  background-image: url(/media/edit.png);
+  background-size: 20px;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border-radius: 5px;
+}
+
+.popup .list {
+  max-height: 120px;
+  width: 100%;
+}
+
+.popup .list .row {
+  margin: 5px 0;
+  position: relative;
+  height: 30px;
+}
+
+.popup .list .row .icon, .popup .list .row .add {
+  width: 30px;
+  vertical-align: middle;
+}
+
+.popup .list .row .add {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.popup .list .row span {
+  margin: 0 5px;
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+}
+
+.popup .list .row:active .add {
+  transform: scale(0.9);
+}
+
+.popup .close {
+  position: absolute;
+  top: 2.5px;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 30px;
 }

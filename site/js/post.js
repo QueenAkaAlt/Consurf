@@ -23,7 +23,7 @@ fetch(`/api/search?id=${postId}`)
       postMedia = document.createElement("img");
       postMedia.src = post.file_url;
       postMedia.onclick = () => {
-        fullImage(post.file_url);
+        postMedia.requestFullscreen();
       };
     } else {
       postMedia = document.createElement("video");
@@ -43,6 +43,10 @@ fetch(`/api/search?id=${postId}`)
     postSave.src = "/media/save.png";
     postSave.onclick = savePost;
     postSave.id = "save";
+    const postList = document.createElement("img");
+    postList.src = "/media/list-add.png";
+    postList.onclick = listPost;
+    postList.id = "list";
     const postDownload = document.createElement("img");
     postDownload.src = "/media/download.png";
     postDownload.onclick = () => {
@@ -87,6 +91,7 @@ fetch(`/api/search?id=${postId}`)
     tagsHolder.appendChild(tagList);
     actionButtons.appendChild(postLove);
     actionButtons.appendChild(postSave);
+    actionButtons.appendChild(postList);
     postButtons.appendChild(actionButtons);
     postButtons.appendChild(postDownload);
     postItem.appendChild(postMedia);
@@ -140,6 +145,40 @@ function savePost() {
   }
 }
 
+function addToList(l) {
+  let list = localStorage.getItem(l);
+  if (!list)
+    return popup(`That list was not found`, [
+      {
+        label: "Ok",
+        function: () => {
+          killAnim(currPopup);
+        },
+      },
+    ]);
+  list = JSON.parse(list);
+  if (list.find((p) => p.id == postId)) {
+    list.splice(list.indexOf(list.find((p) => p.id == postId)), 1);
+    localStorage.setItem(l, JSON.stringify(list));
+    document.getElementById(`addto:${l}`).src = "/media/list-add.png";
+    if (l == "loves") document.getElementById("love").src = "/media/love.png";
+    else if (l == "saves")
+      document.getElementById("save").src = "/media/save.png";
+  } else {
+    list.push({
+      id: postId,
+      preview: postData.preview_url,
+      rating: postData.rating,
+    });
+    localStorage.setItem(l, JSON.stringify(list));
+    document.getElementById(`addto:${l}`).src = "/media/list-added.png";
+    if (l == "loves")
+      document.getElementById("love").src = "/media/love-active.png";
+    else if (l == "saves")
+      document.getElementById("save").src = "/media/save-active.png";
+  }
+}
+
 function downloadPost(type) {
   fetch(`/api/download/${postId}`).then(async (res) => {
     if (res.status == 500) {
@@ -190,6 +229,52 @@ function imageExists(url) {
   });
 }
 
-function fullImage(url) {
-  if (settings.clickZoom) window.open(url, "_blank");
+function listPost() {
+  const popupBg = document.createElement("div");
+  popupBg.classList.add("popup-bg");
+  popupBg.style.opacity = 0;
+  const popupElm = document.createElement("div");
+  popupElm.classList.add("popup");
+  popupElm.textContent = "Add this post to a loadout!";
+  const listsElm = document.createElement("div");
+  listsElm.classList.add("list");
+  lists.forEach((list) => {
+    const listElm = document.createElement("div");
+    listElm.classList.add("row");
+    listElm.onclick = () => {
+      addToList(list.id);
+    };
+    const add = document.createElement("img");
+    const posts = JSON.parse(localStorage.getItem(list.id));
+    if (posts) {
+      const post = posts.find((p) => p.id == postId);
+      if (post) add.src = "/media/list-added.png";
+      else add.src = "/media/list-add.png";
+    } else add.src = "/media/list-add.png";
+    add.classList.add("add");
+    add.id = `addto:${list.id}`;
+    const icon = document.createElement("img");
+    icon.src = list.icon.url;
+    icon.classList.add("icon");
+    const name = document.createElement("span");
+    name.textContent = list.name;
+    listElm.appendChild(icon);
+    listElm.appendChild(name);
+    listElm.appendChild(add);
+    listsElm.appendChild(listElm);
+  });
+  const close = document.createElement("span");
+  close.classList.add("close");
+  close.textContent = "×";
+  close.onclick = () => {
+    killAnim(currPopup);
+  };
+  popupElm.appendChild(close);
+  popupElm.appendChild(listsElm);
+  popupBg.appendChild(popupElm);
+  currPopup = popupBg;
+  document.body.appendChild(popupBg);
+  setTimeout(() => {
+    popupBg.style.opacity = 1;
+  }, 150);
 }

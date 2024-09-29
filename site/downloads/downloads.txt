@@ -1,4 +1,4 @@
 To do:
-- Comment viewer
-- Rearrange settings
-- Add new settings
+- Home Page Recomendations
+- Playlists
+- Exportable Loves Saves and Playlists

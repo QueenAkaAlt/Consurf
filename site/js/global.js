@@ -37,7 +37,9 @@ function popup(content, buttons) {
     });
     popupElm.appendChild(buttonsDiv);
   } else {
-    popupBg.onclick(killAnim(popupBg));
+    popupBg.onclick = () => {
+      killAnim(popupBg);
+    };
   }
   popupBg.appendChild(popupElm);
   currPopup = popupBg;
@@ -87,4 +89,62 @@ if (!getCookie("confirmedAge") || getCookie("confirmedAge" !== "true")) {
       },
     },
   ]);
+}
+
+function compressImage(imageUrl, maxWidth = 150) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+
+    img.onload = () => {
+      let width = img.width;
+      let height = img.height;
+      let ratio = Math.min(maxWidth / width, 1);
+      width *= ratio;
+      height *= ratio;
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+      const dataURL = canvas.toDataURL();
+      resolve(dataURL);
+    };
+    img.onerror = reject;
+    img.src = imageUrl;
+  });
+}
+
+let lists = localStorage.getItem("lists");
+if (lists == null) {
+  lists = [
+    {
+      id: "loves",
+      name: "Favorites",
+      icon: {
+        url: "/media/love.png",
+        fill: false,
+        showName: true,
+      },
+    },
+    {
+      id: "saves",
+      name: "Saves",
+      icon: {
+        url: "/media/save.png",
+        fill: false,
+        showName: true,
+      },
+    },
+  ];
+  localStorage.setItem("lists", JSON.stringify(lists));
+} else lists = JSON.parse(lists);
+
+function idify(str) {
+  const validChars = "abcdefghijklmnopqrstuvwxyz1234567890$-_.+!*'";
+  return str
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .split("")
+    .filter((char) => validChars.includes(char))
+    .join("");
 }

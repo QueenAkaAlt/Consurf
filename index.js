@@ -95,15 +95,25 @@ app.get("/api/download/:id", async (req, res) => {
   }
 });
 
-app.get(["/saves", "/loves", "/post/:id"], async (req, res) => {
-  const route = req.path;
-  let filePath;
-  if (route == "/saves" || route == "/loves") {
-    filePath = path.join(__dirname, "site/html/saved.html");
-  } else {
-    filePath = path.join(__dirname, "site/html/post.html");
+app.get(
+  ["/loadouts", "/loadouts/create", "/loadout/:id/edit", "/loadout/:id"],
+  async (req, res) => {
+    const route = req.path;
+    let filePath;
+    if (route == "/loadouts")
+      filePath = path.join(__dirname, "site/html/lists/lists.html");
+    else if (route == "/loadouts/create")
+      filePath = path.join(__dirname, "site/html/lists/create.html");
+    else if (route.startsWith("/loadout/") && route.endsWith("/edit"))
+      filePath = path.join(__dirname, "site/html/lists/edit.html");
+    else if (route.startsWith("/loadout/"))
+      filePath = path.join(__dirname, "site/html/lists/list.html");
+    res.sendFile(filePath);
   }
-  res.sendFile(filePath);
+);
+
+app.get("/post/:id", async (req, res) => {
+  res.sendFile(path.join(__dirname, "site/html/post.html"));
 });
 
 app.use(

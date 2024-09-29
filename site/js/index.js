@@ -94,12 +94,10 @@ function imageExists(url) {
 
 function loadPage(tags, index = 1) {
   if (!tags || tags == null) return;
-  const newIndex = index + 1;
   fetch(`/api/search?t=posts&q=${tags}&p=${index}`)
     .then((res) => res.json())
     .then(async (posts) => {
-      const postHolder = document.getElementById("postHolder");
-      handlePosts(tags, posts, newIndex);
+      handlePosts(tags, posts, index);
     });
 }
 
@@ -232,10 +230,11 @@ async function handlePosts(tags, posts, page = 0) {
   } else {
     const loadMore = document.createElement("a");
     loadMore.classList.add("load-more");
-    loadMore.href = `#page-${page + 2}`;
+    const newPage = page + 1;
+    loadMore.href = `#page-${newPage + 1}`;
     loadMore.onclick = () => {
       loadMore.remove();
-      loadPage(tags, page);
+      loadPage(tags, newPage);
     };
     const loadIcon = document.createElement("img");
     loadIcon.src = "/media/load.png";

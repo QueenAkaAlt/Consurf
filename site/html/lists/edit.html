@@ -10,19 +10,12 @@
       content="A Rule34 media viewing platform made to be easy to use, and much prettier than the original site" />
     <meta name="og:image" content="/media/icon.png" />
     <link rel="preload" as="image" href="/media/logo.png" />
-    <link rel="preload" as="image" href="/media/love.png" />
-    <link rel="preload" as="image" href="/media/love-active.png" />
-    <link rel="preload" as="image" href="/media/save.png" />
-    <link rel="preload" as="image" href="/media/save-active.png" />
-    <link rel="preload" as="image" href="/media/download.png" />
-    <link rel="preload" as="image" href="/media/logo.png" />
     <link rel="preload" as="image" href="/media/settings.png" />
     <link rel="preload" as="image" href="/media/github.png" />
+    <link rel="icon" type="image/png" href="/media/icon.png" />
     <link rel="preload" as="image" href="/media/list-add.png" />
-    <link rel="preload" as="image" href="/media/list-added.png" />
     <link rel="preload" as="image" href="/media/lists.png" />
     <link rel="preload" href="/css/main.css" as="style" />
-    <link rel="icon" type="image/png" href="/media/icon.png" />
     <link href="/css/index.css" rel="stylesheet" />
   </head>
   <body>
@@ -42,8 +35,42 @@
         </a>
       </div>
     </nav>
-    <div class="main"></div>
+    <div class="cards">
+      <div class="nothing-more" id="preview">
+        <img src="/media/list-add.png" id="picon" />
+        <span id="pname">New Loadout</span>
+      </div>
+      <div class="card" id="cards">
+        <p>
+          Loadout Icon
+          <span class="upload">
+            <input id="icon" type="file" accept="image/*" />
+            <label for="icon">Upload</label>
+          </span>
+        </p>
+        <p>
+          Loadout Name
+          <input id="name" value="My Loadout" type="text" />
+        </p>
+        <p>
+          Show Loadout Name
+          <span class="check">
+            <input type="checkbox" id="showName" />
+            <label for="showName"></label>
+          </span>
+        </p>
+        <p>
+          Loadout Icon Fill
+          <span class="check">
+            <input type="checkbox" id="fill" />
+            <label for="fill"></label>
+          </span>
+        </p>
+        <button onclick="save()">Save</button>
+        <button onclick="del()">Delete</button>
+      </div>
+    </div>
     <script src="/js/global.js"></script>
-    <script src="/js/post.js"></script>
+    <script src="/js/edit.js"></script>
   </body>
 </html>

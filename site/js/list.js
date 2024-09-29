@@ -1,23 +1,11 @@
-const type = window.location.pathname.split("/")[1];
+const type = window.location.pathname.split("/")[2];
 let posts;
-if (type == "saves") {
-  posts = localStorage.getItem("saves");
-  if (!posts) posts = [];
-  else posts = JSON.parse(posts);
-  document.title = "Consurf | Saves";
-} else {
-  posts = localStorage.getItem("loves");
-  if (!posts) posts = [];
-  else posts = JSON.parse(posts);
-  document.title = "Consurf | Favorites";
-}
-
-if (document.getElementById("postHolder"))
-  document.getElementById("postHolder").remove();
-const postHolder = document.createElement("div");
-postHolder.classList.add("posts");
-postHolder.id = "postHolder";
-if (!posts || posts == null || posts == "") {
+posts = localStorage.getItem(type);
+const list = lists.find((l) => l.id == type);
+if (!list) window.location.href = "/";
+if (!posts) posts = [];
+else posts = JSON.parse(posts);
+if (posts.length == 0) {
   const nothingMore = document.createElement("div");
   nothingMore.classList.add("nothing-more");
   const nothingIcon = document.createElement("img");
