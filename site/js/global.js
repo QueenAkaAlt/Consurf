@@ -1,24 +1,26 @@
 let settings;
+const defaultSettings = {
+  blur18: true,
+  hide18: false,
+  blur13: true,
+  hide13: false,
+  blurSafe: false,
+  hideSafe: false,
+  blacklist: [],
+  tagAutofill: true,
+  unblurHover: true,
+  showInfo: true,
+  showTags: true,
+  showComments: true,
+  clickZoom: true,
+  hideSearch: false,
+  liveView: false,
+};
+
 let currPopup;
 if (localStorage.getItem("settings")) {
   settings = JSON.parse(localStorage.getItem("settings"));
-} else {
-  settings = {
-    blur18: true,
-    hide18: false,
-    blur13: true,
-    hide13: false,
-    blurSafe: false,
-    hideSafe: false,
-    blacklist: [],
-    tagAutofill: true,
-    unblurHover: true,
-    showInfo: true,
-    showTags: true,
-    showComments: true,
-    clickZoom: true,
-  };
-}
+} else settings = defaultSettings;
 function popup(content, buttons) {
   const popupBg = document.createElement("div");
   popupBg.classList.add("popup-bg");

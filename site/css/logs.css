@@ -1,0 +1,35 @@
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  margin-top: 50px;
+}
+
+.log {
+  width: calc(100% - 10px);
+  height: fit-content;
+  position: relative;
+  color: #fff;
+  padding: 10px 5px;
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.time {
+  font-size: 18px;
+  display: block;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.time div {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.log:hover {
+  background: rgba(255, 255, 255, 0.2);
+}

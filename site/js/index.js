@@ -39,8 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function search(tags) {
   if (!tags || tags == null) return;
+
   tags = tags.replace(/ /g, "+");
-  window.history.pushState({}, "", `${window.location.origin}/posts/${tags}`);
+  if (!settings.hideSearch)
+    window.history.pushState({}, "", `${window.location.origin}/posts/${tags}`);
   if (settings.blacklist.length) {
     settings.blacklist.forEach((tag) => {
       if (!tag || tag == "" || tag == null) return;
@@ -65,7 +67,7 @@ function search(tags) {
 
 function imageExists(url) {
   return new Promise((resolve) => {
-    if (url.endsWith(".gif")) resolve("/media/gif.png");
+    if (url.endsWith(".gif")) resolve("gif");
     const videoFormats = [
       ".mp4",
       ".avi",
@@ -86,9 +88,9 @@ function imageExists(url) {
       ".ogg",
     ];
     videoFormats.forEach((f) => {
-      if (url.endsWith(f)) resolve("/media/video.png");
+      if (url.endsWith(f)) resolve("video");
     });
-    resolve("/media/image.png");
+    resolve("image");
   });
 }
 
@@ -162,6 +164,7 @@ async function handlePosts(tags, posts, page = 0) {
   if (posts == "" || postLength == 0) {
     const nothingMore = document.createElement("div");
     nothingMore.classList.add("nothing-more");
+    if (settings.liveView) nothingMore.classList.add("live");
     const nothingIcon = document.createElement("img");
     nothingIcon.src = "/media/empty.png";
     const nothingText = document.createElement("span");
@@ -171,53 +174,112 @@ async function handlePosts(tags, posts, page = 0) {
     postHolder.appendChild(nothingMore);
     return;
   }
-  posts.forEach(async (post, i) => {
-    const r = rating(post.rating);
-    const postItem = document.createElement("a");
-    postItem.classList.add("post");
-    postItem.id = post.id;
-    postItem.href = `/post/${post.id}`;
-    const postImg = document.createElement("img");
-    postImg.classList.add("img");
-    postImg.src = post.preview_url;
-    const postInfo = document.createElement("div");
-    postInfo.classList.add("post-info");
-    if (settings.unblurHover) {
-      postInfo.classList.add("unblur");
-    }
-    const postRating = document.createElement("span");
-    postRating.textContent = r.rating;
-    postRating.style.color = `var(--${r.color})`;
-    const postType = document.createElement("img");
-    postType.src = await imageExists(post.file_url);
-    postInfo.appendChild(postRating);
-    postInfo.appendChild(postType);
-    postItem.appendChild(postImg);
-    postItem.appendChild(postInfo);
-    if (!settings.showInfo) {
-      postRating.remove();
-      postType.remove();
-      if (
-        (r.rating == "18+" && !settings.blur18) ||
-        (r.rating == "13+" && !settings.blur13) ||
-        (r.rating == "safe" && !settings.blurSafe)
-      ) {
-        postInfo.remove();
+  if (settings.liveView) {
+    posts.forEach(async (post, i) => {
+      const r = rating(post.rating);
+      const postItem = document.createElement("a");
+      postItem.classList.add("post-live");
+      postItem.href = `/post/${post.id}`;
+      const type = await imageExists(post.file_url);
+      let postMedia;
+      if (type != "video") {
+        postMedia = document.createElement("img");
+        postMedia.src = post.file_url;
+        postMedia.onclick = () => {
+          postMedia.requestFullscreen();
+        };
+      } else {
+        postMedia = document.createElement("video");
+        postMedia.src = post.file_url;
+        postMedia.controls = true;
+        postMedia.loop = true;
+        postMedia.autoplay = false;
       }
-    }
-    if (
-      (r.rating == "18+" && settings.blur18) ||
-      (r.rating == "13+" && settings.blur13) ||
-      (r.rating == "safe" && settings.blurSafe)
-    ) {
-      postInfo.classList.add("full-blur");
-    }
-    postHolder.appendChild(postItem);
-    postsDone++;
-  });
+      postMedia.classList.add("media");
+      const postRating = document.createElement("span");
+      postRating.textContent = r.rating;
+      postRating.style.color = `var(--${r.color})`;
+      const postType = document.createElement("img");
+      postType.src = `/media/${await imageExists(post.file_url)}.png`;
+      const postInfo = document.createElement("div");
+      postInfo.classList.add("post-info");
+      postInfo.appendChild(postRating);
+      postInfo.appendChild(postType);
+      postItem.appendChild(postMedia);
+      postItem.appendChild(postInfo);
+      if (settings.unblurHover) {
+        postInfo.classList.add("unblur");
+      }
+      if (!settings.showInfo) {
+        postRating.remove();
+        postType.remove();
+        if (
+          (r.rating == "18+" && !settings.blur18) ||
+          (r.rating == "13+" && !settings.blur13) ||
+          (r.rating == "safe" && !settings.blurSafe)
+        ) {
+          postInfo.remove();
+        }
+      }
+      if (
+        (r.rating == "18+" && settings.blur18) ||
+        (r.rating == "13+" && settings.blur13) ||
+        (r.rating == "safe" && settings.blurSafe)
+      ) {
+        postInfo.classList.add("full-blur");
+      }
+      postHolder.appendChild(postItem);
+      postsDone++;
+    });
+  } else {
+    posts.forEach(async (post, i) => {
+      const r = rating(post.rating);
+      const postItem = document.createElement("a");
+      postItem.classList.add("post");
+      postItem.href = `/post/${post.id}`;
+      const postImg = document.createElement("img");
+      postImg.classList.add("img");
+      postImg.src = post.preview_url;
+      const postInfo = document.createElement("div");
+      postInfo.classList.add("post-info");
+      if (settings.unblurHover) {
+        postInfo.classList.add("unblur");
+      }
+      const postRating = document.createElement("span");
+      postRating.textContent = r.rating;
+      postRating.style.color = `var(--${r.color})`;
+      const postType = document.createElement("img");
+      postType.src = `/media/${await imageExists(post.file_url)}.png`;
+      postInfo.appendChild(postRating);
+      postInfo.appendChild(postType);
+      postItem.appendChild(postImg);
+      postItem.appendChild(postInfo);
+      if (!settings.showInfo) {
+        postRating.remove();
+        postType.remove();
+        if (
+          (r.rating == "18+" && !settings.blur18) ||
+          (r.rating == "13+" && !settings.blur13) ||
+          (r.rating == "safe" && !settings.blurSafe)
+        ) {
+          postInfo.remove();
+        }
+      }
+      if (
+        (r.rating == "18+" && settings.blur18) ||
+        (r.rating == "13+" && settings.blur13) ||
+        (r.rating == "safe" && settings.blurSafe)
+      ) {
+        postInfo.classList.add("full-blur");
+      }
+      postHolder.appendChild(postItem);
+      postsDone++;
+    });
+  }
   if (postLength < 100) {
     const nothingMore = document.createElement("div");
     nothingMore.classList.add("nothing-more");
+    if (settings.liveView) nothingMore.classList.add("live");
     const nothingIcon = document.createElement("img");
     nothingIcon.src = "/media/nothing.png";
     const nothingText = document.createElement("span");
@@ -230,6 +292,7 @@ async function handlePosts(tags, posts, page = 0) {
   } else {
     const loadMore = document.createElement("a");
     loadMore.classList.add("load-more");
+    if (settings.liveView) loadMore.classList.add("live");
     const newPage = page + 1;
     loadMore.href = `#page-${newPage + 1}`;
     loadMore.onclick = () => {

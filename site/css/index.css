@@ -116,7 +116,7 @@ nav a img {
   z-index: 1;
 }
 
-.post .post-info {
+.post-info {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -127,33 +127,43 @@ nav a img {
   border-radius: 0 10px 0 0;
   backdrop-filter: blur(5px);
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-content: center;
   z-index: 3;
 }
 
-.post .post-info.full-blur {
+.post-info.full-blur {
   backdrop-filter: blur(20px);
   border-radius: 0;
-  padding-top: 120px;
-  padding-right: 90px;
+  width: 100%;
+  height: 100%;
 }
 
-.post .post-info.unblur:hover {
-  backdrop-filter: blur(0px);
-  background: transparent;
+.post-info.unblur:hover {
+  opacity: 0;
 }
 
-.post .post-info img {
+.post-info img {
   width: 18px;
   user-select: none;
+  margin-left: 10px;
 }
 
-.post .post-info span {
-  font-size: 15px;
+.post-info span {
+  font-size: 17px;
   font-weight: bold;
   user-select: none;
-  cursor: default;
+}
+
+.post-info.full-blur img {
+  width: 30px;
+  user-select: none;
+}
+
+.post-info.full-blur span {
+  font-size: 20px;
+  font-weight: bold;
+  user-select: none;
 }
 
 .post-full {
@@ -373,6 +383,7 @@ textarea {
   align-items: center;
   justify-content: space-between;
   margin: 5px 0;
+  position: relative;
 }
 
 input[type=checkbox] {
@@ -391,6 +402,18 @@ input[type=checkbox] {
   border-radius: 100px;
   position: relative;
   float: right;
+}
+
+.post-live {
+  width: calc(100% - 10px);
+  margin: 5px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.post-live .media {
+  width: 100%;
 }
 
 .check label:after {
@@ -458,6 +481,23 @@ button:active, .upload label:active {
 
 .load-more, .nothing-more {
   width: 150px;
+  height: 150px;
+  border-radius: 5px;
+  display: inline-block;
+  position: relative;
+  margin: 5px;
+  overflow: hidden;
+  background: var(--main);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-decoration: none;
+}
+
+.load-more.live,
+.nothing-more.live {
+  width: calc(100% - 10px);
   height: 150px;
   border-radius: 5px;
   display: inline-block;
@@ -647,4 +687,14 @@ hr {
   line-height: 30px;
   text-align: center;
   font-size: 30px;
+}
+
+.tooltip {
+  width: 16px;
+  height: 16px;
+  background-image: url("/media/tip.png");
+  background-size: contain;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
 }

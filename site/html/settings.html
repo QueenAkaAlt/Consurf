@@ -14,7 +14,7 @@
     <link rel="preload" as="image" href="/media/settings.png" />
     <link rel="preload" as="image" href="/media/github.png" />
     <link rel="preload" as="image" href="/media/lists.png" />
-    <link rel="preload" href="/css/main.css" as="style" />
+    <link rel="preload" href="/css/index.css" as="style" />
     <link href="/css/index.css" rel="stylesheet" />
   </head>
   <body>
@@ -36,6 +36,7 @@
     </nav>
     <div class="cards">
       <div class="card">
+        <h3>Search</h3>
         <p>
           Blur 18+ posts
           <span class="check">
@@ -58,14 +59,6 @@
           </span>
         </p>
         <p>
-          Unblur posts on mouse hover
-          <span class="check">
-            <input type="checkbox" id="unblurHover" />
-            <label for="unblurHover"></label>
-          </span>
-        </p>
-        <hr />
-        <p>
           Hide 18+ posts
           <span class="check">
             <input type="checkbox" id="hide18" />
@@ -86,12 +79,50 @@
             <label for="hideSafe"></label>
           </span>
         </p>
-        <hr />
         <p>
-          Show post information
+          <span>
+            Live view
+            <span
+              class="tooltip"
+              tip='If the "Liveview" UI should be used rather than the "Preview" UI (Not recommended on mobile devices)'></span
+          ></span>
+          <span class="check">
+            <input type="checkbox" id="liveView" />
+            <label for="liveView"></label>
+          </span>
+        </p>
+        <p>
+          <span>
+            Show post information
+            <span
+              class="tooltip"
+              tip="If post type and rating should be shown"></span
+          ></span>
           <span class="check">
             <input type="checkbox" id="showInfo" />
             <label for="showInfo"></label>
+          </span>
+        </p>
+        <p>
+          <span>
+            Family Computer Mode
+            <span
+              class="tooltip"
+              tip="Stop search data from being put into URLs"></span
+          ></span>
+          <span class="check">
+            <input type="checkbox" id="hideSearch" />
+            <label for="hideSearch"></label>
+          </span>
+        </p>
+      </div>
+      <div class="card">
+        <h3>Posts</h3>
+        <p>
+          Unblur posts on mouse hover
+          <span class="check">
+            <input type="checkbox" id="unblurHover" />
+            <label for="unblurHover"></label>
           </span>
         </p>
         <p>
@@ -109,13 +140,15 @@
           </span>
         </p>
         <p>
-          Click image to zoom
+          Zoom images on click
           <span class="check">
             <input type="checkbox" id="clickZoom" />
             <label for="clickZoom"></label>
           </span>
         </p>
-        <hr />
+      </div>
+      <div class="card">
+        <h3>Tags</h3>
         <p>
           Tag autofill
           <span class="check">
@@ -123,10 +156,17 @@
             <label for="tagAutofill"></label>
           </span>
         </p>
-        <p>Tag blacklist</p>
+        <p>
+          <span>
+            Tag blacklist
+            <span
+              class="tooltip"
+              tip="Tags you dont want to see when searching"></span
+          ></span>
+        </p>
         <textarea
           id="blacklist"
-          placeholder="Tags you don't want to see, seperated by a comma (,)"></textarea>
+          placeholder="Tags you dont want to see, seperated by a comma (,)"></textarea>
       </div>
       <div class="buttons">
         <div>
