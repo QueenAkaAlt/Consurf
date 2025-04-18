@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="/js/global.js"></script>
+    <title>Consurf</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="og:title" content="Consurf" />
+    <meta
+      name="og:description"
+      content="A Rule34 media viewing platform made to be easy to use, and much prettier than the original site" />
+    <meta name="og:image" content="/media/icon.png" />
+    <link rel="icon" type="image/png" href="/media/icon.png" />
+    <link href="/css/index.css" rel="stylesheet" />
+    <link rel="preload" as="image" href="/media/logo.png" />
+    <link rel="preload" as="image" href="/media/settings.png" />
+    <link rel="preload" as="image" href="/media/panic.png" />
+    <link rel="preload" as="image" href="/media/github.png" />
+  </head>
+  <body>
+    <nav>
+      <a href="/">
+        <img src="/media/logo.png" alt="Logo" />
+      </a>
+      <div>
+        <a href="https://google.com" id="panicButton">
+          <img src="/media/panic.png" alt="Panic!!" title="Panic!!" />
+        </a>
+        <a href="/loadouts"
+          ><img src="/media/lists.png" alt="My Loadouts" title="My Loadouts"
+        /></a>
+        <a href="/settings"
+          ><img src="/media/settings.png" alt="Settings" title="Settings"
+        /></a>
+        <a href="https://github.com/QueenAkaAlt/Consurf">
+          <img src="/media/github.png" alt="Source Code" title="Source Code" />
+        </a>
+      </div>
+    </nav>
+    <div class="cards">
+      <div class="nothing-more" id="preview">
+        <img src="/media/list-add.png" id="picon" />
+        <span id="pname">New Loadout</span>
+      </div>
+      <div class="card" id="cards">
+        <p>
+          Loadout Icon
+          <span class="upload">
+            <input id="icon" type="file" accept="image/*" />
+            <label for="icon">Upload</label>
+          </span>
+        </p>
+        <p>
+          Loadout Name
+          <input id="name" value="My Loadout" type="text" />
+        </p>
+        <p>
+          Show Loadout Name
+          <span class="check">
+            <input type="checkbox" id="showName" />
+            <label for="showName"></label>
+          </span>
+        </p>
+        <p>
+          Loadout Icon Fill
+          <span class="check">
+            <input type="checkbox" id="fill" />
+            <label for="fill"></label>
+          </span>
+        </p>
+        <button onclick="save()">Save</button>
+        <button onclick="del()">Delete</button>
+      </div>
+    </div>
+    <script src="/js/edit.js"></script>
+  </body>
+</html>

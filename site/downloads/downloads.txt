@@ -1,0 +1,4 @@
+To do:
+- Home Page Recomendations
+- Playlists
+- Exportable Loves Saves and Playlists

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="/js/global.js"></script>
+    <title>Consurf</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="og:title" content="Consurf" />
+    <meta
+      name="og:description"
+      content="A Rule34 media viewing platform made to be easy to use, and much prettier than the original site" />
+    <meta name="og:image" content="/media/icon.png" />
+    <link rel="icon" type="image/png" href="/media/icon.png" />
+    <link href="/css/index.css" rel="stylesheet" />
+    <link rel="preload" as="image" href="/media/logo.png" />
+    <link rel="preload" as="image" href="/media/settings.png" />
+    <link rel="preload" as="image" href="/media/panic.png" />
+    <link rel="preload" as="image" href="/media/github.png" />
+  </head>
+  <body>
+    <nav>
+      <a href="/">
+        <img src="/media/logo.png" alt="Logo" />
+      </a>
+      <div>
+        <a href="https://google.com" id="panicButton">
+          <img src="/media/panic.png" alt="Panic!!" title="Panic!!" />
+        </a>
+        <a href="/loadouts"
+          ><img src="/media/lists.png" alt="My Loadouts" title="My Loadouts"
+        /></a>
+        <a href="/settings"
+          ><img src="/media/settings.png" alt="Settings" title="Settings"
+        /></a>
+        <a href="https://github.com/QueenAkaAlt/Consurf">
+          <img src="/media/github.png" alt="Source Code" title="Source Code" />
+        </a>
+      </div>
+    </nav>
+    <div id="postHolder" class="posts"></div>
+    <script src="/js/lists.js"></script>
+  </body>
+</html>
