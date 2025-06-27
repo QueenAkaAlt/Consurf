@@ -39,14 +39,7 @@ async function save() {
     },
   };
   if (!json.name || json.name == "")
-    return popup(`ERROR: Loadout name is required`, [
-      {
-        label: "Ok",
-        function: () => {
-          killAnim(currPopup);
-        },
-      },
-    ]);
+    return notify("ERROR: Loadout name is required");
   const list = lists.find((l) => l.id == json.id);
   const index = lists.indexOf(list);
   lists[index] = json;
@@ -74,4 +67,17 @@ function del() {
       },
     },
   ]);
+}
+
+function exp() {
+  const list = lists.find((l) => l.id == type);
+  const items = JSON.stringify(localStorage.getItem(type));
+  list.items = items;
+  const blob = new Blob([JSON.stringify(list)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `consurf_${type}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
 }

@@ -14,7 +14,7 @@
   --roundest: 100px;
 }
 
-:root[round=false] {
+:root[round="false"] {
   --round: 0px;
   --rounder: 0px;
   --roundest: 0px;
@@ -135,7 +135,7 @@ nav a img {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 60px;
+  width: 70px;
   height: 30px;
   background: var(--darker);
   align-items: center;
@@ -196,7 +196,8 @@ nav a img {
   overflow: hidden;
 }
 
-.post-full .item img, .post-full .item video {
+.post-full .item img,
+.post-full .item video {
   border-radius: var(--round);
   max-height: calc(100vh - 70px);
   max-width: calc(100vw - 20px);
@@ -261,7 +262,7 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 5px;
+  margin: 5px auto;
 }
 
 .main {
@@ -269,7 +270,7 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
 
 .tag-list {
@@ -412,7 +413,7 @@ textarea {
   position: relative;
 }
 
-input[type=checkbox] {
+input[type="checkbox"] {
   height: 0;
   width: 0;
   visibility: hidden;
@@ -443,7 +444,7 @@ input[type=checkbox] {
 }
 
 .check label:after {
-  content: '';
+  content: "";
   position: absolute;
   top: 2.5px;
   left: 2.5px;
@@ -454,11 +455,11 @@ input[type=checkbox] {
   transition: 0.2s;
 }
 
-input:checked+label {
+input:checked + label {
   background: var(--main);
 }
 
-input:checked+label:after {
+input:checked + label:after {
   left: calc(100% - 2.5px);
   transform: translateX(-100%);
 }
@@ -492,7 +493,8 @@ button {
   display: inline-block;
 }
 
-button:active, .upload label:active {
+button:active,
+.upload label:active {
   transform: scale(0.9);
 }
 
@@ -505,7 +507,16 @@ button:active, .upload label:active {
   width: calc(100% - 10px);
 }
 
-.load-more, .nothing-more {
+.buttons .group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: fit-content;
+  gap: 5px;
+}
+
+.load-more,
+.nothing-more {
   width: 150px;
   height: 150px;
   border-radius: var(--round);
@@ -538,7 +549,8 @@ button:active, .upload label:active {
   text-decoration: none;
 }
 
-.load-more img, .nothing-more img {
+.load-more img,
+.nothing-more img {
   width: 50px;
   margin: 5px;
 }
@@ -550,13 +562,15 @@ button:active, .upload label:active {
   object-fit: cover;
 }
 
-.load-more span, .nothing-more span {
+.load-more span,
+.nothing-more span {
   font-size: 15px;
   font-weight: bold;
   color: var(--text);
 }
 
-.fill.nothing-more span, .no-name.nothing-more span {
+.fill.nothing-more span,
+.no-name.nothing-more span {
   display: none;
 }
 
@@ -564,14 +578,16 @@ button:active, .upload label:active {
   background: var(--darker);
 }
 
-.post-tags, .post-comments {
+.post-tags,
+.post-comments {
   width: calc(100% - 10px);
   height: fit-content;
   padding: 5px;
   margin: 5px 0;
 }
 
-.post-tags summary, .post-comments summary {
+.post-tags summary,
+.post-comments summary {
   font-weight: bold;
   font-size: 17px;
 }
@@ -632,7 +648,7 @@ hr {
 }
 
 .post-full .post-comments .comment:hover {
-  background: var(--lighter)
+  background: var(--lighter);
 }
 
 .upload input {
@@ -682,7 +698,8 @@ hr {
   height: 30px;
 }
 
-.popup .list .row .icon, .popup .list .row .add {
+.popup .list .row .icon,
+.popup .list .row .add {
   width: 30px;
   height: 30px;
   vertical-align: middle;
@@ -735,7 +752,8 @@ hr {
   vertical-align: middle;
 }
 
-select, option {
+select,
+option {
   height: 20px;
   line-height: 20px;
   padding: 2.5px 5px;
@@ -748,7 +766,7 @@ select, option {
   width: 150px;
 }
 
-input[type=color] {
+input[type="color"] {
   height: 20px;
   padding: 0;
   border: none;
@@ -785,4 +803,102 @@ input[type=color] {
   transition: all 0.2s ease-in-out;
   width: calc(100% - 20px);
   padding-left: 20px;
+}
+
+.highlight {
+  background: var(--main);
+  color: white;
+}
+
+.notif {
+  width: fit-content;
+  height: 30px;
+  line-height: 30px;
+  outline: var(--main) 2px solid;
+  background: var(--background);
+  color: white;
+  animation: slideOpen 0.1s ease-in-out;
+  position: fixed;
+  top: 57px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 10px;
+  border-radius: 10px;
+  text-align: center;
+  overflow: hidden;
+  font-weight: bold;
+  max-width: fit-content;
+}
+
+.notif.close {
+  animation: slideClose 0.1s ease-in-out forwards;
+}
+
+@keyframes slideOpen {
+  from {
+    transform: translate(-50%, -49px);
+  }
+
+  to {
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes slideClose {
+  from {
+    transform: translate(-50%, 0);
+  }
+
+  to {
+    transform: translate(-50%, -49px);
+  }
+}
+
+.rclick {
+  width: 150px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--background);
+  outline: 2px solid var(--main);
+  position: absolute;
+  border-radius: 10px;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.rclick div {
+  padding: 5px 0;
+  width: calc(100% - 40px);
+  text-align: left;
+  padding-left: 40px;
+  height: 30px;
+  line-height: 30px;
+  font-weight: bolder;
+  position: relative;
+}
+
+.rclick div::before {
+  content: "";
+  mask-image: var(--img);
+  background: white;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  height: 30px;
+  width: 30px;
+  mask-size: 30px;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  transition: all 0.1s ease-in-out;
+}
+
+.rclick .active::before {
+  background: var(--main);
+}
+
+.rclick div:hover {
+  background: var(--lighter);
 }

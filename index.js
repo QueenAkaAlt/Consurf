@@ -8,15 +8,6 @@ const cheerio = require("cheerio");
 const port = 10000;
 const parseString = require("xml2js").parseString;
 const tagCache = new Map();
-
-process.on("uncaughtException", (error) => {
-  log(error, "ERROR");
-});
-
-process.on("unhandledRejection", (reason, promise) => {
-  log(reason, "ERROR");
-});
-
 app.use(express.json());
 
 app.get("/api/search", async (req, res) => {
@@ -27,8 +18,9 @@ app.get("/api/search", async (req, res) => {
   try {
     let data;
     if (type == "tags") {
+      // Thanks for the unofficial api endpoint guys :3
       const response = await axios.get(
-        `https://ac.rule34.xxx/autocomplete.php?q=${tags}`
+        `https://api.rule34.xxx/autocomplete.php?q=${tags}`
       );
       data = response.data;
     } else {
@@ -49,13 +41,11 @@ app.get("/api/search", async (req, res) => {
           `https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&tags=${tags}&pid=${page}&json=1`
         );
         data = response.data;
-        if (page == 0) log(`Searched for ${tags}`);
       }
     }
 
     res.json(data);
   } catch (error) {
-    log(error, "ERROR");
     res.status(500).json({ error: "Failed to fetch post" });
   }
 });
@@ -80,7 +70,6 @@ app.get("/api/download/:id", async (req, res) => {
           res.status(500).send("An error occurred");
         } else {
           res.sendFile(path.join(__dirname, "/site/downloads", `${id}.png`));
-          log(`Downloaded post ${id}`);
         }
       }
     );
@@ -92,7 +81,6 @@ app.get("/api/download/:id", async (req, res) => {
       });
     }, 10000);
   } catch (error) {
-    log(error, "ERROR");
     res.status(500).send("An error occurred");
   }
 });
@@ -129,29 +117,8 @@ app.use((req, res) => {
 });
 
 app.listen(port, () => {
-  log("Server started", "EVENT");
+  console.log("Server started on port", port);
 });
-
-function log(message, type = "LOG") {
-  const newYorkDate = new Date();
-  const formatter = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/New_York",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-  });
-  const formattedDate = formatter.format(newYorkDate);
-  const $ = cheerio.load(
-    fs.readFileSync(path.join(__dirname, "site/html/logs.html"))
-  );
-  $("body").append(
-    `<div class="log">\n\t<span class="time"><div>[${type}]</div><div>${formattedDate}</div></span>\n\t<span class="msg">${message}</span>\n</div>\n`
-  );
-  fs.writeFileSync(path.join(__dirname, "site/html/logs.html"), $.html());
-}
 
 function xmlToJson(xml) {
   return new Promise((resolve, reject) => {
@@ -160,7 +127,6 @@ function xmlToJson(xml) {
       { mergeAttrs: true, explicitArray: false },
       (err, result) => {
         if (err) {
-          log(err, "ERROR");
           reject(err);
         } else {
           resolve(result);

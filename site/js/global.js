@@ -15,7 +15,7 @@ const defaultSettings = {
   clickZoom: true,
   hideSearch: false,
   liveView: false,
-  mainColor: "#006bcc",
+  mainColor: "#8000ff",
   backgroundColor: "#202020",
   round: true,
   hidePopup: false,
@@ -163,4 +163,22 @@ function idify(str) {
     .split("")
     .filter((char) => validChars.includes(char))
     .join("");
+}
+
+function panic() {
+  document.documentElement.innerHTML = "Loading...";
+  window.location.href = "https://google.com";
+}
+
+function notify(text, durr = 3500) {
+  const div = document.createElement("div");
+  div.classList.add("notif");
+  div.textContent = text;
+  document.body.appendChild(div);
+  setTimeout(() => {
+    div.classList.add("close");
+    setTimeout(() => {
+      div.remove();
+    }, 1000);
+  }, durr);
 }

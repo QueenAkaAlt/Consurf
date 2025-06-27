@@ -35,6 +35,7 @@ fetch(`/api/search?id=${postId}`)
     const postButtons = document.createElement("div");
     postButtons.classList.add("post-buttons");
     const actionButtons = document.createElement("div");
+    const shareButtons = document.createElement("div");
     const postLove = document.createElement("div");
     postLove.style = "--img: url(/media/love.png)";
     postLove.classList.add("img");
@@ -50,6 +51,10 @@ fetch(`/api/search?id=${postId}`)
     postList.classList.add("img");
     postList.onclick = listPost;
     postList.id = "list";
+    const postShare = document.createElement("div");
+    postShare.style = "--img: url(/media/share.png)";
+    postShare.classList.add("img");
+    postShare.onclick = sharePost;
     const postDownload = document.createElement("div");
     postDownload.style = "--img: url(/media/download.png)";
     postDownload.classList.add("img");
@@ -97,7 +102,9 @@ fetch(`/api/search?id=${postId}`)
     actionButtons.appendChild(postSave);
     actionButtons.appendChild(postList);
     postButtons.appendChild(actionButtons);
-    postButtons.appendChild(postDownload);
+    shareButtons.appendChild(postShare);
+    shareButtons.appendChild(postDownload);
+    postButtons.appendChild(shareButtons);
     postItem.appendChild(postMedia);
     postItem.appendChild(postButtons);
     postHolder.appendChild(postItem);
@@ -151,15 +158,7 @@ function savePost() {
 
 function addToList(l) {
   let list = localStorage.getItem(l);
-  if (!list)
-    return popup(`That list was not found`, [
-      {
-        label: "Ok",
-        function: () => {
-          killAnim(currPopup);
-        },
-      },
-    ]);
+  if (!list) return notify(`That list was not found`);
   list = JSON.parse(list);
   if (list.find((p) => p.id == postId)) {
     list.splice(list.indexOf(list.find((p) => p.id == postId)), 1);
@@ -190,12 +189,7 @@ function addToList(l) {
 function downloadPost(type) {
   fetch(`/api/download/${postId}`).then(async (res) => {
     if (res.status == 500) {
-      popup("Something went wrong while downloading the post", {
-        label: "Ok",
-        function: () => {
-          killAnim(currPopup);
-        },
-      });
+      notify("Something went wrong while downloading the post");
       return;
     }
     const blob = await res.blob();
@@ -288,4 +282,16 @@ function listPost() {
   setTimeout(() => {
     popupBg.style.opacity = 1;
   }, 150);
+}
+
+function sharePost() {
+  navigator.clipboard
+    .writeText(window.location.href)
+    .then(() => {
+      notify("Copied post URL to Clipboard!");
+    })
+    .catch((e) => {
+      console.error(e);
+      notify("Failed to copy post URL.");
+    });
 }

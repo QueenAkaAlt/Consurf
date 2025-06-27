@@ -26,7 +26,7 @@
         <img src="/media/logo.png" alt="Logo" />
       </a>
       <div>
-        <a href="https://google.com" id="panicButton">
+        <a href="javascript:panic()" id="panicButton">
           <img src="/media/panic.png" alt="Panic!!" title="Panic!!" />
         </a>
         <a href="/loadouts"
@@ -46,7 +46,11 @@
         <h1>Consurf</h1>
       </div>
       <div class="search-holder">
-        <input id="search" placeholder="Search" type="text" />
+        <input
+          id="search"
+          placeholder="Search"
+          type="text"
+          autocomplete="off" />
       </div>
     </div>
   </body>

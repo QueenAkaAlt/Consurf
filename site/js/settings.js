@@ -25,9 +25,6 @@ function save() {
     hidePopup: document.getElementById("hidePopup").checked,
   };
   set(ssettings);
-  popup("Your settings have been saved!", [
-    { label: "Ok!", function: () => killAnim(currPopup) },
-  ]);
 }
 
 function reset(a = true) {
@@ -63,7 +60,7 @@ function reset(a = true) {
       hideSearch: false,
       liveView: false,
       round: true,
-      mainColor: "#006bcc",
+      mainColor: "#8000ff",
       backgroundColor: "#202020",
       hidePopup: false,
     };
@@ -133,11 +130,78 @@ function roundBorder() {
   root.setAttribute("round", round);
 }
 
-let hasUnsavedChanges = true;
+function autoSaveSetup() {
+  const elements = [
+    "blur18",
+    "hide18",
+    "blur13",
+    "hide13",
+    "blurSafe",
+    "hideSafe",
+    "blacklist",
+    "tagAutofill",
+    "unblurHover",
+    "showInfo",
+    "showTags",
+    "showComments",
+    "clickZoom",
+    "hideSearch",
+    "liveView",
+    "round",
+    "mainColor",
+    "backgroundColor",
+    "hidePopup",
+    "presets",
+  ];
 
-window.addEventListener("beforeunload", (event) => {
-  if (hasUnsavedChanges) {
-    event.preventDefault();
-    event.returnValue = "";
-  }
-});
+  elements.forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const eventType =
+      el.tagName === "INPUT" && el.type === "text" ? "input" : "change";
+    el.addEventListener(eventType, () => {
+      if (id === "presets") {
+        theme();
+      }
+      save();
+    });
+  });
+}
+
+autoSaveSetup();
+
+function exp() {
+  const dataStr = localStorage.getItem("settings");
+  if (!dataStr) return popup("No settings to export.");
+  const blob = new Blob([dataStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "settings.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function imp() {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "application/json";
+  input.onchange = () => {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const importedSettings = JSON.parse(e.target.result);
+        set(importedSettings);
+        notify("Settings imported successfully!");
+      } catch (err) {
+        notify("Invalid settings file.");
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  input.click();
+}
