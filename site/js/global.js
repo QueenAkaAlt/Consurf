@@ -182,3 +182,11 @@ function notify(text, durr = 3500) {
     }, 1000);
   }, durr);
 }
+
+function setCookie(name, value) {
+  const expires = new Date();
+  expires.setFullYear(expires.getFullYear() + 20);
+  document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(
+    value
+  )}; expires=${expires.toUTCString()}; path=/`;
+}

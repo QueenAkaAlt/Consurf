@@ -6,11 +6,14 @@ function rating(r) {
   return { rating: rating, color: colors[ratings.indexOf(r)] };
 }
 
-let loadouts = {};
+let loadouts = {
+  loves: [],
+  saves: [],
+};
 lists.forEach((list) => {
   const id = list.id;
   const items = JSON.parse(localStorage.getItem(id));
-  loadouts[id] = items;
+  if (items) loadouts[id] = items;
 });
 
 const searchbar = document.getElementById("search");
@@ -27,10 +30,21 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("tagList").remove();
     }
   });
+
+  document.getElementById("viewMode").src = `/media/${
+    settings.liveView ? "image" : "lists"
+  }.png`;
+  let debounceTimeout;
+
   searchbar.addEventListener("input", (e) => {
     if (!settings.tagAutofill) return;
-    tagSearch(e);
+
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => {
+      tagSearch(e);
+    }, 500);
   });
+
   if (searchbar !== document.activeElement) {
     if (document.getElementById("tagList")) {
       setTimeout(() => {
@@ -46,7 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function search(tags) {
   if (!tags || tags == null) return;
-
+  const sorting = document.getElementById("sorter");
+  tags += `+${sorting.value}`;
   tags = tags.replace(/ /g, "+");
   if (!settings.hideSearch)
     window.history.pushState({}, "", `${window.location.origin}/posts/${tags}`);
@@ -198,15 +213,17 @@ async function handlePosts(tags, posts, page = 0) {
       if (type != "video") {
         postMedia = document.createElement("img");
         postMedia.src = post.file_url;
-        postMedia.onclick = () => {
-          postMedia.requestFullscreen();
-        };
       } else {
         postMedia = document.createElement("video");
         postMedia.src = post.file_url;
         postMedia.controls = true;
         postMedia.loop = true;
         postMedia.autoplay = false;
+        postMedia.volume = getCookie("setVolume");
+        postMedia.onvolumechange = () => {
+          const volume = postMedia.volume;
+          setCookie("setVolume", volume);
+        };
       }
       postMedia.classList.add("media");
       const postRating = document.createElement("span");
@@ -382,7 +399,7 @@ function rclickMenu(elm, post) {
 }
 
 function loadoutHas(loadout, id) {
-  return loadouts[loadout].find((p) => p.id == id);
+  return loadouts[loadout]?.find((p) => p.id == id);
 }
 
 function addToList(list, post) {
@@ -397,6 +414,7 @@ function addToList(list, post) {
     loadouts[list].push({
       id: post.id,
       preview: post.preview_url,
+      full: post.file_url,
       rating: post.rating,
     });
     localStorage.setItem(list, JSON.stringify(loadouts[list]));
@@ -492,4 +510,10 @@ function gDownloadPost(post) {
     a.click();
     URL.revokeObjectURL(url);
   });
+}
+
+function switchView() {
+  settings.liveView = !settings.liveView;
+  localStorage.setItem("settings", JSON.stringify(settings));
+  window.location.reload();
 }

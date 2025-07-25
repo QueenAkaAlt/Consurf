@@ -31,6 +31,11 @@ fetch(`/api/search?id=${postId}`)
       postMedia.controls = true;
       postMedia.loop = true;
       postMedia.autoplay = true;
+      postMedia.volume = getCookie("setVolume");
+      postMedia.onvolumechange = () => {
+        const volume = postMedia.volume;
+        setCookie("setVolume", volume);
+      };
     }
     const postButtons = document.createElement("div");
     postButtons.classList.add("post-buttons");
@@ -66,10 +71,11 @@ fetch(`/api/search?id=${postId}`)
     const tagSummary = document.createElement("summary");
     const tagList = document.createElement("span");
     tagSummary.innerText = "Tags";
-    post.tags.split(" ").forEach((tag) => {
+    Object.keys(post.tags).forEach((key) => {
       const tagItem = document.createElement("a");
-      tagItem.innerText = tag;
-      tagItem.href = `/posts/${tag}`;
+      tagItem.innerText = key;
+      tagItem.href = `/posts/${key}`;
+      tagItem.classList.add(post.tags[key]);
       tagList.appendChild(tagItem);
     });
 
@@ -108,7 +114,7 @@ fetch(`/api/search?id=${postId}`)
     postItem.appendChild(postMedia);
     postItem.appendChild(postButtons);
     postHolder.appendChild(postItem);
-    if (post.tags.length > 0 && settings.showTags)
+    if (Object.keys(post.tags).length > 0 && settings.showTags)
       postHolder.appendChild(tagsHolder);
     if (post.comment_count != 0 && settings.showComments && post.comments) {
       postHolder.appendChild(commentHolder);
@@ -133,6 +139,7 @@ function lovePost() {
     loves.push({
       id: postId,
       preview: postData.preview_url,
+      full: postData.file_url,
       rating: postData.rating,
     });
     localStorage.setItem("loves", JSON.stringify(loves));
@@ -149,6 +156,7 @@ function savePost() {
     saves.push({
       id: postId,
       preview: postData.preview_url,
+      full: postData.file_url,
       rating: postData.rating,
     });
     localStorage.setItem("saves", JSON.stringify(saves));
@@ -174,6 +182,7 @@ function addToList(l) {
     list.push({
       id: postId,
       preview: postData.preview_url,
+      full: postData.file_url,
       rating: postData.rating,
     });
     localStorage.setItem(l, JSON.stringify(list));

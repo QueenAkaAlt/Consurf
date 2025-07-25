@@ -51,6 +51,17 @@
           placeholder="Search"
           type="text"
           autocomplete="off" />
+        <select class="sort" id="sorter">
+          <option value="">New</option>
+          <option value="sort:score">Top</option>
+          <option value="sort:updated">Updated</option>
+        </select>
+        <img
+          src="/media/lists.png"
+          class="view"
+          alt="View"
+          id="viewMode"
+          onclick="switchView();" />
       </div>
     </div>
   </body>

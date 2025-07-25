@@ -18,48 +18,111 @@ if (posts.length == 0) {
   document.body.appendChild(postHolder);
 }
 posts.forEach(async (post) => {
-  const t = await imageExists(post.preview);
-  const r = rating(post.rating);
-  const postItem = document.createElement("a");
-  postItem.classList.add("post");
-  postItem.id = post.id;
-  postItem.href = `/post/${post.id}`;
-  const postImg = document.createElement("img");
-  postImg.classList.add("img");
-  postImg.src = post.preview;
-  const postInfo = document.createElement("div");
-  postInfo.classList.add("post-info");
-  if (settings.unblurHover) {
-    postInfo.classList.add("unblur");
-  }
-  const postRating = document.createElement("span");
-  postRating.textContent = r.rating;
-  postRating.style.color = `var(--${r.color})`;
-  const postType = document.createElement("img");
-  postType.src = t;
-  postInfo.appendChild(postRating);
-  postInfo.appendChild(postType);
-  postItem.appendChild(postImg);
-  postItem.appendChild(postInfo);
-  if (!settings.showInfo) {
-    postRating.remove();
-    postType.remove();
-    if (
-      (r.rating == "18+" && !settings.blur18) ||
-      (r.rating == "13+" && !settings.blur13) ||
-      (r.rating == "safe" && !settings.blurSafe)
-    ) {
-      postInfo.remove();
+  if (settings.liveView) {
+    posts.forEach(async (post, i) => {
+      const type = await imageExists(post.full || post.preview);
+      const r = rating(post.rating);
+      const postItem = document.createElement("a");
+      postItem.classList.add("post-live");
+      postItem.href = `/post/${post.id}`;
+      let postMedia;
+      if (type != "video") {
+        postMedia = document.createElement("img");
+        postMedia.src = post.full || post.preview;
+      } else {
+        postMedia = document.createElement("video");
+        postMedia.src = post.full || post.preview;
+        postMedia.controls = true;
+        postMedia.loop = true;
+        postMedia.autoplay = false;
+        postMedia.volume = getCookie("setVolume");
+        postMedia.onvolumechange = () => {
+          const volume = postMedia.volume;
+          setCookie("setVolume", volume);
+        };
+      }
+      postMedia.classList.add("media");
+      const postRating = document.createElement("span");
+      postRating.textContent = r.rating;
+      postRating.style.color = `var(--${r.color})`;
+      const postType = document.createElement("img");
+      postType.src = `/media/${await imageExists(
+        post.full || post.preview
+      )}.png`;
+      const postInfo = document.createElement("div");
+      postInfo.classList.add("post-info");
+      postInfo.appendChild(postRating);
+      postInfo.appendChild(postType);
+      postItem.appendChild(postMedia);
+      postItem.appendChild(postInfo);
+      if (settings.unblurHover) {
+        postInfo.classList.add("unblur");
+      }
+      if (!settings.showInfo) {
+        postRating.remove();
+        postType.remove();
+        if (
+          (r.rating == "18+" && !settings.blur18) ||
+          (r.rating == "13+" && !settings.blur13) ||
+          (r.rating == "safe" && !settings.blurSafe)
+        ) {
+          postInfo.remove();
+        }
+      }
+      if (
+        (r.rating == "18+" && settings.blur18) ||
+        (r.rating == "13+" && settings.blur13) ||
+        (r.rating == "safe" && settings.blurSafe)
+      ) {
+        postInfo.classList.add("full-blur");
+      }
+      post.type = type;
+      postHolder.appendChild(postItem);
+    });
+  } else {
+    const t = await imageExists(post.preview);
+    const r = rating(post.rating);
+    const postItem = document.createElement("a");
+    postItem.classList.add("post");
+    postItem.id = post.id;
+    postItem.href = `/post/${post.id}`;
+    const postImg = document.createElement("img");
+    postImg.classList.add("img");
+    postImg.src = post.preview;
+    const postInfo = document.createElement("div");
+    postInfo.classList.add("post-info");
+    if (settings.unblurHover) {
+      postInfo.classList.add("unblur");
     }
+    const postRating = document.createElement("span");
+    postRating.textContent = r.rating;
+    postRating.style.color = `var(--${r.color})`;
+    const postType = document.createElement("img");
+    postType.src = t;
+    postInfo.appendChild(postRating);
+    postInfo.appendChild(postType);
+    postItem.appendChild(postImg);
+    postItem.appendChild(postInfo);
+    if (!settings.showInfo) {
+      postRating.remove();
+      postType.remove();
+      if (
+        (r.rating == "18+" && !settings.blur18) ||
+        (r.rating == "13+" && !settings.blur13) ||
+        (r.rating == "safe" && !settings.blurSafe)
+      ) {
+        postInfo.remove();
+      }
+    }
+    if (
+      (r.rating == "18+" && settings.blur18) ||
+      (r.rating == "13+" && settings.blur13) ||
+      (r.rating == "safe" && settings.blurSafe)
+    ) {
+      postInfo.classList.add("full-blur");
+    }
+    postHolder.appendChild(postItem);
   }
-  if (
-    (r.rating == "18+" && settings.blur18) ||
-    (r.rating == "13+" && settings.blur13) ||
-    (r.rating == "safe" && settings.blurSafe)
-  ) {
-    postInfo.classList.add("full-blur");
-  }
-  postHolder.appendChild(postItem);
 });
 document.body.appendChild(postHolder);
 
