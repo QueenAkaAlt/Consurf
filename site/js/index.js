@@ -264,29 +264,78 @@ async function handlePosts(tags, posts, page = 0) {
       postsDone++;
     });
   } else {
+    let adCount = 2;
+    for (let i = 0; i < adCount; i++) {
+      posts.push({ isAd: true, id: `ad-${Date.now()}` });
+    }
+
+    console.log(posts);
+
     posts.forEach(async (post, i) => {
+      if (post.isAd) {
+        const adPost = document.createElement("a");
+        adPost.classList.add("post");
+        adPost.href = "#";
+        const adBox = document.createElement("div");
+        adBox.classList.add("img");
+        adBox.style.display = "flex";
+        adBox.style.justifyContent = "center";
+        adBox.style.alignItems = "center";
+        adBox.style.width = "100%";
+        adBox.style.height = "100%";
+        const adIns = document.createElement("ins");
+        adIns.setAttribute("id", `ad-slot-${i}`);
+        adIns.setAttribute("data-width", "125");
+        adIns.setAttribute("data-height", "125");
+        adBox.appendChild(adIns);
+        adPost.appendChild(adBox);
+        const adInfo = document.createElement("div");
+        adInfo.classList.add("post-info", "unblur");
+        const adType = document.createElement("img");
+        adType.src = `/media/ad.png`;
+        const adRating = document.createElement("span");
+        adRating.textContent = "N/A";
+        adRating.style.color = `var(--main)`;
+        adInfo.appendChild(adRating);
+        adInfo.appendChild(adType);
+        adPost.appendChild(adInfo);
+        postHolder.appendChild(adPost);
+        (adsbyjuicy = window.adsbyjuicy || []).push({
+          adzone: 1098604,
+          ins: adIns,
+        });
+
+        return;
+      }
+
       const type = await imageExists(post.file_url);
       const r = rating(post.rating);
       const postItem = document.createElement("a");
       postItem.classList.add("post");
       postItem.href = `/post/${post.id}`;
+
       const postImg = document.createElement("img");
       postImg.classList.add("img");
       postImg.src = post.preview_url;
+
       const postInfo = document.createElement("div");
       postInfo.classList.add("post-info");
       if (settings.unblurHover) {
         postInfo.classList.add("unblur");
       }
+
       const postRating = document.createElement("span");
       postRating.textContent = r.rating;
       postRating.style.color = `var(--${r.color})`;
+
       const postType = document.createElement("img");
       postType.src = `/media/${await imageExists(post.file_url)}.png`;
+
       postInfo.appendChild(postRating);
       postInfo.appendChild(postType);
       postItem.appendChild(postImg);
       postItem.appendChild(postInfo);
+
       if (!settings.showInfo) {
         postRating.remove();
         postType.remove();
@@ -305,6 +354,7 @@ async function handlePosts(tags, posts, page = 0) {
       ) {
         postInfo.classList.add("full-blur");
       }
+
       post.type = type;
       rclickMenu(postItem, post);
       postHolder.appendChild(postItem);
