@@ -4,6 +4,7 @@ if (sets) set(JSON.parse(sets));
 else reset(false);
 function save() {
   const ssettings = {
+    ads: document.getElementById("ads").checked,
     blur18: document.getElementById("blur18").checked,
     hide18: document.getElementById("hide18").checked,
     blur13: document.getElementById("blur13").checked,
@@ -44,6 +45,7 @@ function reset(a = true) {
     ]);
   } else {
     const ssettings = {
+      ads: false,
       blur18: true,
       hide18: false,
       blur13: true,
@@ -69,6 +71,7 @@ function reset(a = true) {
 }
 
 function set(ssettings) {
+  document.getElementById("ads").checked = ssettings.ads;
   document.getElementById("blur18").checked = ssettings.blur18;
   document.getElementById("hide18").checked = ssettings.hide18;
   document.getElementById("blur13").checked = ssettings.blur13;
@@ -132,6 +135,7 @@ function roundBorder() {
 
 function autoSaveSetup() {
   const elements = [
+    "ads",
     "blur18",
     "hide18",
     "blur13",

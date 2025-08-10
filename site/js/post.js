@@ -71,11 +71,10 @@ fetch(`/api/search?id=${postId}`)
     const tagSummary = document.createElement("summary");
     const tagList = document.createElement("span");
     tagSummary.innerText = "Tags";
-    Object.keys(post.tags).forEach((key) => {
+    post.tags.split(" ").forEach((tag) => {
       const tagItem = document.createElement("a");
-      tagItem.innerText = key;
-      tagItem.href = `/posts/${key}`;
-      tagItem.classList.add(post.tags[key]);
+      tagItem.innerText = tag;
+      tagItem.href = `/posts/${tag}`;
       tagList.appendChild(tagItem);
     });
 

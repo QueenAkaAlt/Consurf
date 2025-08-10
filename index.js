@@ -25,14 +25,13 @@ app.get("/api/search", async (req, res) => {
       data = response.data;
     } else {
       if (id) {
-        const [postRes, commentRes, tagsRes] = await Promise.all([
+        const [postRes, commentRes] = await Promise.all([
           axios.get(
             `https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&id=${id}&json=1`
           ),
           axios.get(
             `https://api.rule34.xxx/index.php?page=dapi&s=comment&q=index&post_id=${id}`
           ),
-          getTypedTags(id),
         ]);
 
         data = postRes.data[0];
@@ -40,10 +39,6 @@ app.get("/api/search", async (req, res) => {
         const comments = await xmlToJson(commentRes.data);
         if (comments && comments.comments) {
           data.comments = comments.comments.comment;
-        }
-
-        if (tagsRes.length !== 0) {
-          data.tags = tagsRes;
         }
       } else {
         const response = await axios.get(
@@ -143,26 +138,4 @@ function xmlToJson(xml) {
       }
     );
   });
-}
-
-async function getTypedTags(postId) {
-  const res = await fetch(
-    `https://rule34.xxx/index.php?page=post&s=view&id=${postId}`
-  );
-  const html = await res.text();
-  const $ = cheerio.load(html);
-
-  const tags = {};
-
-  $("#tag-sidebar li").each((i, li) => {
-    const type =
-      $(li)
-        .attr("class")
-        ?.match(/tag-type-(\w+)/)?.[1] || "unknown";
-    const anchors = $(li).find("a");
-    const name = $(anchors[1]).text().trim().replace(/\s+/g, "_");
-    if (name) tags[name] = type;
-  });
-
-  return tags;
 }

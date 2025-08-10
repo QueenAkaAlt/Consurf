@@ -1,5 +1,6 @@
 let settings;
 const defaultSettings = {
+  ads: false,
   blur18: true,
   hide18: false,
   blur13: true,
