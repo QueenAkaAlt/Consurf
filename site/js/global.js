@@ -1,5 +1,3 @@
-(adsbyjuicy = window.adsbyjuicy || []).push({ adzone: 1098604 });
-
 let settings;
 const defaultSettings = {
   ads: false,
