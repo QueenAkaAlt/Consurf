@@ -20,17 +20,17 @@ app.get("/api/search", async (req, res) => {
     if (type == "tags") {
       // Thanks for the unofficial api endpoint guys :3
       const response = await axios.get(
-        `https://api.rule34.xxx/autocomplete.php?q=${tags}`
+        `https://api.rule34.xxx/autocomplete.php?q=${tags}&api_key=e08211f99626513cef071b7cd9de37956f14591672d36bb973583c0101d2f98e2b28399a43ec563dd6d7fa25357d6d12c945ac2ed145c5679cbe632425e963d1&user_id=5625142`
       );
       data = response.data;
     } else {
       if (id) {
         const [postRes, commentRes] = await Promise.all([
           axios.get(
-            `https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&id=${id}&json=1`
+            `https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&id=${id}&json=1&api_key=e08211f99626513cef071b7cd9de37956f14591672d36bb973583c0101d2f98e2b28399a43ec563dd6d7fa25357d6d12c945ac2ed145c5679cbe632425e963d1&user_id=5625142`
           ),
           axios.get(
-            `https://api.rule34.xxx/index.php?page=dapi&s=comment&q=index&post_id=${id}`
+            `https://api.rule34.xxx/index.php?page=dapi&s=comment&q=index&post_id=${id}&api_key=e08211f99626513cef071b7cd9de37956f14591672d36bb973583c0101d2f98e2b28399a43ec563dd6d7fa25357d6d12c945ac2ed145c5679cbe632425e963d1&user_id=5625142`
           ),
         ]);
 
@@ -42,7 +42,7 @@ app.get("/api/search", async (req, res) => {
         }
       } else {
         const response = await axios.get(
-          `https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&tags=${tags}&pid=${page}&json=1`
+          `https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&tags=${tags}&pid=${page}&json=1&api_key=e08211f99626513cef071b7cd9de37956f14591672d36bb973583c0101d2f98e2b28399a43ec563dd6d7fa25357d6d12c945ac2ed145c5679cbe632425e963d1&user_id=5625142`
         );
         data = response.data;
       }
@@ -58,7 +58,7 @@ app.get("/api/download/:id", async (req, res) => {
   const id = req.params.id;
   try {
     const response = await axios.get(
-      `https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&id=${id}&json=1`
+      `https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&id=${id}&json=1&api_key=e08211f99626513cef071b7cd9de37956f14591672d36bb973583c0101d2f98e2b28399a43ec563dd6d7fa25357d6d12c945ac2ed145c5679cbe632425e963d1&user_id=5625142`
     );
     const data = response.data[0];
     const imageData = await axios.get(data.file_url, {

@@ -186,6 +186,7 @@ function tagSearch() {
 }
 
 async function handlePosts(tags, posts, page = 0) {
+  console.log(posts);
   const postLength = posts.length;
   let postsDone = 0;
   if (posts == "" || postLength == 0) {
@@ -264,50 +265,7 @@ async function handlePosts(tags, posts, page = 0) {
       postsDone++;
     });
   } else {
-    let adCount = 2;
-    for (let i = 0; i < adCount; i++) {
-      posts.push({ isAd: true, id: `ad-${Date.now()}` });
-    }
-
-    console.log(posts);
-
     posts.forEach(async (post, i) => {
-      if (post.isAd) {
-        const adPost = document.createElement("a");
-        adPost.classList.add("post");
-        adPost.href = "#";
-        const adBox = document.createElement("div");
-        adBox.classList.add("img");
-        adBox.style.display = "flex";
-        adBox.style.justifyContent = "center";
-        adBox.style.alignItems = "center";
-        adBox.style.width = "100%";
-        adBox.style.height = "100%";
-        const adIns = document.createElement("ins");
-        adIns.setAttribute("id", `ad-slot-${i}`);
-        adIns.setAttribute("data-width", "125");
-        adIns.setAttribute("data-height", "125");
-        adBox.appendChild(adIns);
-        adPost.appendChild(adBox);
-        const adInfo = document.createElement("div");
-        adInfo.classList.add("post-info", "unblur");
-        const adType = document.createElement("img");
-        adType.src = `/media/ad.png`;
-        const adRating = document.createElement("span");
-        adRating.textContent = "N/A";
-        adRating.style.color = `var(--main)`;
-        adInfo.appendChild(adRating);
-        adInfo.appendChild(adType);
-        adPost.appendChild(adInfo);
-        postHolder.appendChild(adPost);
-        (adsbyjuicy = window.adsbyjuicy || []).push({
-          adzone: 1098604,
-          ins: adIns,
-        });
-
-        return;
-      }
-
       const type = await imageExists(post.file_url);
       const r = rating(post.rating);
       const postItem = document.createElement("a");
