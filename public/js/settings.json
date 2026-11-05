@@ -53,7 +53,7 @@
         "name": "Default Sort",
         "id": "default-sort",
         "type": "dropdown",
-        "default": "newest",
+        "default": "",
         "options": [
           { "name": "Newest", "value": "" },
           { "name": "Top Rated", "value": "sort:score" },
