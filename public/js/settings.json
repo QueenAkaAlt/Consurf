@@ -1,0 +1,185 @@
+[
+  {
+    "name": "General",
+    "settings": [
+      {
+        "name": "Theme Editor",
+        "type": "subcategory",
+        "settings": [
+          {
+            "name": "Main Color",
+            "id": "main-color",
+            "type": "color",
+            "default": "#8000FF"
+          },
+          {
+            "name": "Background Color",
+            "id": "background-color",
+            "type": "color",
+            "default": "#202020"
+          },
+          {
+            "name": "Presets",
+            "type": "dropdown",
+            "id": "theme-presets",
+            "default": "afton",
+            "options": [
+              { "name": "Period", "value": "period" },
+              { "name": "Afton", "value": "afton" },
+              { "name": "Hacker", "value": "hacker" },
+              { "name": "Poppy Seed", "value": "poppy-seed" },
+              { "name": "Mint Chip", "value": "mint-chip" },
+              { "name": "Lavender", "value": "lavender" },
+              { "name": "Tundra", "value": "tundra" },
+              { "name": "Bubble Gum", "value": "bubble-gum" },
+              { "name": "So Retro", "value": "so-retro" }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Hide 18+ Popup",
+        "id": "hide-18-popup",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "name": "Rounded Corners",
+        "id": "rounded-corners",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "name": "Default Sort",
+        "id": "default-sort",
+        "type": "dropdown",
+        "default": "newest",
+        "options": [
+          { "name": "Newest", "value": "" },
+          { "name": "Top Rated", "value": "sort:score" },
+          { "name": "Recently Updated", "value": "sort:updated" }
+        ]
+      },
+      {
+        "name": "Default View",
+        "id": "default-view",
+        "type": "dropdown",
+        "default": "grid",
+        "options": [
+          { "name": "Grid", "value": "grid" },
+          { "name": "Live", "value": "live" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Posts",
+    "settings": [
+      {
+        "name": "Show Tags",
+        "id": "show-tags",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "name": "Show Comments",
+        "id": "show-comments",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "name": "Zoom Images on Click",
+        "id": "zoom-images-click",
+        "type": "boolean",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Search",
+    "settings": [
+      {
+        "name": "Search Suggestions",
+        "id": "search-suggestions",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "name": "Family Computer Mode",
+        "id": "family-computer",
+        "type": "boolean",
+        "default": false,
+        "description": "Hides searches from the URL, keeping your browser history clean."
+      },
+      {
+        "name": "Show Post Information",
+        "id": "show-post-info",
+        "type": "boolean",
+        "default": true,
+        "description": "Whether to display the post's rating, and media type in search results or not."
+      },
+      {
+        "name": "Hide 18+ Posts",
+        "id": "hide-18-posts",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "name": "Hide 13+ Posts",
+        "id": "hide-13-posts",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "name": "Hide Safe Posts",
+        "id": "hide-safe-posts",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "name": "Blur 18+ Posts",
+        "id": "blur-18-posts",
+        "type": "boolean",
+        "default": true,
+        "visibleIf": {
+          "setting": "hide-18-posts",
+          "value": false
+        }
+      },
+      {
+        "name": "Blur 13+ Posts",
+        "id": "blur-13-posts",
+        "type": "boolean",
+        "default": true,
+        "visibleIf": {
+          "setting": "hide-13-posts",
+          "value": false
+        }
+      },
+      {
+        "name": "Blur Safe Posts",
+        "id": "blur-safe-posts",
+        "type": "boolean",
+        "default": false,
+        "visibleIf": {
+          "setting": "hide-safe-posts",
+          "value": false
+        }
+      },
+      {
+        "name": "Unblur Posts on Hover",
+        "id": "unblur-posts-hover",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "name": "Tag Blocklist",
+        "id": "tag-blocklist",
+        "type": "textarea",
+        "default": "",
+        "placeholder": "Tags you don't want to see, separated by commas.\nExample: tag1, tag2, tag3",
+        "description": "Posts with these tags will be hidden from search results, useful for filtering out unwanted content."
+      }
+    ]
+  }
+]

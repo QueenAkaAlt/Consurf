@@ -18,7 +18,7 @@ lists.forEach((list) => {
 
 const searchbar = document.getElementById("search");
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   searchbar.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -32,12 +32,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("viewMode").src = `/media/${
-    settings.liveView ? "image" : "lists"
+    settings["default-view"] == "live" ? "image" : "lists"
   }.png`;
   let debounceTimeout;
 
   searchbar.addEventListener("input", (e) => {
-    if (!settings.tagAutofill) return;
+    if (!settings["search-suggestions"]) return;
 
     clearTimeout(debounceTimeout);
     debounceTimeout = setTimeout(() => {
@@ -53,27 +53,43 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 100);
     }
   } else {
-    if (!settings.tagAutofill) return;
+    if (!settings["search-suggestions"]) return;
     tagSearch();
   }
+
+  await settingsReady;
+  const sorting = document.getElementById("sorter");
+  sorting.value = settings["default-sort"];
+  const viewMode = document.getElementById("viewMode");
+  if (settings["default-view"] == "live") viewMode.src = "/media/image.png";
+  else viewMode.src = "/media/lists.png";
 });
+
+function cleanTags(tags) {
+  tags = tags.replace(/ /g, "+");
+  // Remove duplicate tags
+  const tagArray = tags.split("+");
+  const uniqueTags = [...new Set(tagArray)];
+  return uniqueTags.join("+");
+}
 
 function search(tags) {
   if (!tags || tags == null) return;
   const sorting = document.getElementById("sorter");
   tags += `+${sorting.value}`;
-  tags = tags.replace(/ /g, "+");
-  if (!settings.hideSearch)
+  tags = cleanTags(tags);
+  if (!settings["family-computer"])
     window.history.pushState({}, "", `${window.location.origin}/posts/${tags}`);
-  if (settings.blacklist.length) {
-    settings.blacklist.forEach((tag) => {
+  if (settings["tag-blocklist"].length) {
+    settings["tag-blocklist"].forEach((tag) => {
       if (!tag || tag == "" || tag == null) return;
       tags += `+-${tag.trim()}`;
     });
   }
-  if (settings.hide18) tags += "+-rating:explicit";
-  if (settings.hide13) tags += "+-rating:questionable";
-  if (settings.hideSafe) tags += "+-rating:safe";
+
+  if (settings["hide-18-posts"]) tags += "+-rating:explicit";
+  if (settings["hide-13-posts"]) tags += "+-rating:questionable";
+  if (settings["hide-safe-posts"]) tags += "+-rating:safe";
   fetch("/api/search?q=" + tags)
     .then((res) => res.json())
     .then(async (posts) => {
@@ -192,7 +208,7 @@ async function handlePosts(tags, posts, page = 0) {
   if (posts == "" || postLength == 0) {
     const nothingMore = document.createElement("div");
     nothingMore.classList.add("nothing-more");
-    if (settings.liveView) nothingMore.classList.add("live");
+    if (settings["default-view"] == "live") nothingMore.classList.add("live");
     const nothingIcon = document.createElement("img");
     nothingIcon.src = "/media/empty.png";
     const nothingText = document.createElement("span");
@@ -203,7 +219,7 @@ async function handlePosts(tags, posts, page = 0) {
     return;
   }
 
-  if (settings.liveView) {
+  if (settings["default-view"] == "live") {
     posts.forEach(async (post, i) => {
       const type = await imageExists(post.file_url);
       const r = rating(post.rating);
@@ -238,24 +254,24 @@ async function handlePosts(tags, posts, page = 0) {
       postInfo.appendChild(postType);
       postItem.appendChild(postMedia);
       postItem.appendChild(postInfo);
-      if (settings.unblurHover) {
+      if (settings["unblur-posts-hover"]) {
         postInfo.classList.add("unblur");
       }
-      if (!settings.showInfo) {
+      if (!settings["show-post-info"]) {
         postRating.remove();
         postType.remove();
         if (
-          (r.rating == "18+" && !settings.blur18) ||
-          (r.rating == "13+" && !settings.blur13) ||
-          (r.rating == "safe" && !settings.blurSafe)
+          (r.rating == "18+" && !settings["blur-18-posts"]) ||
+          (r.rating == "13+" && !settings["blur-13-posts"]) ||
+          (r.rating == "safe" && !settings["blur-safe-posts"])
         ) {
           postInfo.remove();
         }
       }
       if (
-        (r.rating == "18+" && settings.blur18) ||
-        (r.rating == "13+" && settings.blur13) ||
-        (r.rating == "safe" && settings.blurSafe)
+        (r.rating == "18+" && settings["blur-18-posts"]) ||
+        (r.rating == "13+" && settings["blur-13-posts"]) ||
+        (r.rating == "safe" && settings["blur-safe-posts"])
       ) {
         postInfo.classList.add("full-blur");
       }
@@ -278,7 +294,7 @@ async function handlePosts(tags, posts, page = 0) {
 
       const postInfo = document.createElement("div");
       postInfo.classList.add("post-info");
-      if (settings.unblurHover) {
+      if (settings["unblur-posts-hover"]) {
         postInfo.classList.add("unblur");
       }
 
@@ -294,21 +310,21 @@ async function handlePosts(tags, posts, page = 0) {
       postItem.appendChild(postImg);
       postItem.appendChild(postInfo);
 
-      if (!settings.showInfo) {
+      if (!settings["show-post-info"]) {
         postRating.remove();
         postType.remove();
         if (
-          (r.rating == "18+" && !settings.blur18) ||
-          (r.rating == "13+" && !settings.blur13) ||
-          (r.rating == "safe" && !settings.blurSafe)
+          (r.rating == "18+" && !settings["blur-18-posts"]) ||
+          (r.rating == "13+" && !settings["blur-13-posts"]) ||
+          (r.rating == "safe" && !settings["blur-safe-posts"])
         ) {
           postInfo.remove();
         }
       }
       if (
-        (r.rating == "18+" && settings.blur18) ||
-        (r.rating == "13+" && settings.blur13) ||
-        (r.rating == "safe" && settings.blurSafe)
+        (r.rating == "18+" && settings["blur-18-posts"]) ||
+        (r.rating == "13+" && settings["blur-13-posts"]) ||
+        (r.rating == "safe" && settings["blur-safe-posts"])
       ) {
         postInfo.classList.add("full-blur");
       }
@@ -322,7 +338,7 @@ async function handlePosts(tags, posts, page = 0) {
   if (postLength < 100) {
     const nothingMore = document.createElement("div");
     nothingMore.classList.add("nothing-more");
-    if (settings.liveView) nothingMore.classList.add("live");
+    if (settings["default-view"] == "live") nothingMore.classList.add("live");
     const nothingIcon = document.createElement("img");
     nothingIcon.src = "/media/nothing.png";
     const nothingText = document.createElement("span");
@@ -335,7 +351,7 @@ async function handlePosts(tags, posts, page = 0) {
   } else {
     const loadMore = document.createElement("a");
     loadMore.classList.add("load-more");
-    if (settings.liveView) loadMore.classList.add("live");
+    if (settings["default-view"] == "live") loadMore.classList.add("live");
     const newPage = page + 1;
     loadMore.href = `#page-${newPage + 1}`;
     loadMore.onclick = () => {
@@ -352,6 +368,19 @@ async function handlePosts(tags, posts, page = 0) {
       await new Promise((resolve) => setTimeout(resolve, 100));
     postHolder.appendChild(loadMore);
   }
+}
+
+function switchView() {
+  const viewMode = document.getElementById("viewMode");
+  console.log(settings["default-view"]);
+  if (settings["default-view"] == "live") {
+    setSetting("default-view", "grid");
+    viewMode.src = "/media/lists.png";
+  } else {
+    setSetting("default-view", "live");
+    viewMode.src = "/media/image.png";
+  }
+  saveSettings();
 }
 
 // TODO: Finish right click menu, using the loadouts var
@@ -414,7 +443,7 @@ function addToList(list, post) {
   if (loadoutHas(list, post.id)) {
     loadouts[list].splice(
       loadouts[list].indexOf(loadouts[list].find((p) => p.id == post.id)),
-      1
+      1,
     );
     localStorage.setItem(list, JSON.stringify(loadouts[list]));
     document.getElementById(list)?.classList.remove("active");
@@ -518,10 +547,4 @@ function gDownloadPost(post) {
     a.click();
     URL.revokeObjectURL(url);
   });
-}
-
-function switchView() {
-  settings.liveView = !settings.liveView;
-  localStorage.setItem("settings", JSON.stringify(settings));
-  window.location.reload();
 }

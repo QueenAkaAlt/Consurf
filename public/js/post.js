@@ -79,7 +79,7 @@ fetch(`/api/search?id=${postId}`)
     });
 
     let commentHolder;
-    if (post.comment_count != 0 && settings.showComments && post.comments) {
+    if (post.comment_count != 0 && settings["show-comments"] && post.comments) {
       commentHolder = document.createElement("details");
       commentHolder.classList.add("post-comments");
       const commentSummary = document.createElement("summary");
@@ -113,9 +113,9 @@ fetch(`/api/search?id=${postId}`)
     postItem.appendChild(postMedia);
     postItem.appendChild(postButtons);
     postHolder.appendChild(postItem);
-    if (Object.keys(post.tags).length > 0 && settings.showTags)
+    if (Object.keys(post.tags).length > 0 && settings["show-tags"])
       postHolder.appendChild(tagsHolder);
-    if (post.comment_count != 0 && settings.showComments && post.comments) {
+    if (post.comment_count != 0 && settings["show-comments"] && post.comments) {
       postHolder.appendChild(commentHolder);
     }
     document.body.appendChild(postHolder);

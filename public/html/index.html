@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <script src="/js/global.js"></script>
@@ -13,12 +13,6 @@
     <meta
       name="google-site-verification"
       content="H8EqSndplj_-KwZemZgQmchLSCAc9mYtZUFiIiA0NUc" />
-    <meta
-      name="juicyads-site-verification"
-      content="72ccee6c61a9554e4800f4af92e15fbf" />
-    <script type="text/javascript" data-cfasync="false" async>
-      (adsbyjuicy = window.adsbyjuicy || []).push({ adzone: 1098604 });
-    </script>
     <link rel="icon" type="image/png" href="/media/icon.png" />
     <link href="/css/index.css" rel="stylesheet" />
     <link rel="preload" as="image" href="/media/logo.png" />
@@ -58,77 +52,18 @@
           type="text"
           autocomplete="off" />
         <select class="sort" id="sorter">
-          <option value="">New</option>
-          <option value="sort:score">Top</option>
-          <option value="sort:updated">Updated</option>
+          <option value="">Newest</option>
+          <option value="sort:score">Top Rated</option>
+          <option value="sort:updated">Recently Updated</option>
         </select>
         <img
           src="/media/lists.png"
           class="view"
           alt="View"
           id="viewMode"
-          onclick="switchView();" />
+          onclick="switchView()" />
       </div>
-    </div>
-    <div class="clippy">
-      <style>
-        .clippy {
-          bottom: -75px;
-          right: -75px;
-          position: fixed;
-          opacity: 0.3;
-          transition: all 0.5s ease-in-out;
-          transition-delay: 1s;
-          transform: rotate(-45deg);
-          width: 150px;
-          height: 150px;
-        }
-
-        .clippy img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-        }
-
-        .clippy:hover {
-          transform: rotate(0deg);
-          bottom: 0px;
-          right: 0px;
-          opacity: 1;
-          width: 200px;
-          height: 200px;
-          mix-blend-mode: difference;
-        }
-
-        .clippy::before {
-          content: "Learn about the Clippy Movement";
-          position: absolute;
-          top: -50px;
-          left: -5px;
-          font-size: 20px;
-          font-family: sans-serif;
-          font-weight: bold;
-          opacity: 0;
-          transition: all 0.5s ease-in-out;
-          transition-delay: 1s;
-          text-align: center;
-          color: black;
-          background: white;
-        }
-
-        .clippy:hover::before {
-          opacity: 1;
-        }
-      </style>
-      <img
-        src="clippy.png"
-        onclick="window.open('https://www.youtube.com/watch?v=2_Dtmpe9qaQ')" />
     </div>
   </body>
   <script src="/js/index.js"></script>
-  <script
-    type="text/javascript"
-    data-cfasync="false"
-    async
-    src="https://poweredby.jads.co/js/jads.js"></script>
 </html>

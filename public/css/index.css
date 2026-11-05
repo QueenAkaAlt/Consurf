@@ -414,7 +414,8 @@ textarea {
   margin: 5px;
 }
 
-.card p {
+.card p,
+.setting {
   width: 100%;
   height: fit-content;
   display: flex;
@@ -759,13 +760,51 @@ hr {
   display: inline-block;
   position: relative;
   vertical-align: middle;
+  margin-left: 5px;
+}
+
+.tooltip::after {
+  content: attr(tip);
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: var(--text-dark);
+  padding: 5px;
+  border-radius: var(--round);
+  white-space: nowrap;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tooltip::before {
+  content: "";
+  background: var(--text);
+  width: 10px;
+  height: 10px;
+  rotate: 45deg;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tooltip:hover::after,
+.tooltip:hover::before {
+  opacity: 1;
+  transition: all 0.1s ease-in-out;
 }
 
 select,
 option {
-  height: 20px;
+  height: 25px;
   line-height: 20px;
-  padding: 2.5px 5px;
+  padding: 5px;
   font-size: 12px;
   border: none;
   background: var(--background);
@@ -773,6 +812,12 @@ option {
   border-radius: var(--round);
   outline: none;
   width: 150px;
+  margin-left: 5px;
+}
+
+.dropdown-content select,
+.dropdown-content option {
+  background: var(--darker);
 }
 
 input[type="color"] {
@@ -780,6 +825,7 @@ input[type="color"] {
   padding: 0;
   border: none;
   border-radius: var(--round);
+  margin-left: 5px;
 }
 
 .dropdown {
@@ -811,7 +857,14 @@ input[type="color"] {
   overflow: hidden;
   transition: all 0.2s ease-in-out;
   width: calc(100% - 20px);
-  padding-left: 20px;
+  background: var(--background);
+  border-radius: var(--round);
+  padding: 0px 5px 0px 15px;
+}
+
+.dropdown-content[data-open="true"] {
+  padding: 5px 5px 5px 15px;
+  margin-bottom: 5px;
 }
 
 .highlight {
