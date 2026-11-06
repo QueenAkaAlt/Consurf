@@ -107,7 +107,11 @@ app.get(
 );
 
 app.get("/post/:id", async (req, res) => {
-  res.sendFile(path.join(__dirname, "site/html/post.html"));
+  res.sendFile(path.join(__dirname, "public/html/post.html"));
+});
+
+app.get("/posts/:q", async (req, res) => {
+  res.sendFile(path.join(__dirname, "public/html/index.html"));
 });
 
 app.use(express.static(path.join(__dirname, "public")));

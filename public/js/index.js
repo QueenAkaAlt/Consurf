@@ -10,6 +10,7 @@ let loadouts = {
   loves: [],
   saves: [],
 };
+
 lists.forEach((list) => {
   const id = list.id;
   const items = JSON.parse(localStorage.getItem(id));
@@ -17,7 +18,6 @@ lists.forEach((list) => {
 });
 
 const searchbar = document.getElementById("search");
-
 document.addEventListener("DOMContentLoaded", async () => {
   searchbar.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
@@ -63,6 +63,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   const viewMode = document.getElementById("viewMode");
   if (settings["default-view"] == "live") viewMode.src = "/media/image.png";
   else viewMode.src = "/media/lists.png";
+  if (
+    window.location.pathname.includes("posts") &&
+    window.location.pathname.split("/").length == 3
+  ) {
+    const searchBar = document.getElementById("search");
+    const parts = window.location.pathname.split("/");
+    const lastPart = parts[parts.length - 1];
+    const replacedText = lastPart.replace(/\+/g, " ");
+    searchBar.value = replacedText;
+    search(replacedText);
+  }
 });
 
 function cleanTags(tags) {
@@ -70,6 +81,9 @@ function cleanTags(tags) {
   // Remove duplicate tags
   const tagArray = tags.split("+");
   const uniqueTags = [...new Set(tagArray)];
+  // remove trailing and leading + signs
+  if (uniqueTags[0] == "") uniqueTags.shift();
+  if (uniqueTags[uniqueTags.length - 1] == "") uniqueTags.pop();
   return uniqueTags.join("+");
 }
 
@@ -139,18 +153,6 @@ function loadPage(tags, index = 1) {
     .then(async (posts) => {
       handlePosts(tags, posts, index);
     });
-}
-
-if (
-  window.location.pathname.includes("posts") &&
-  window.location.pathname.split("/").length == 3
-) {
-  const searchBar = document.getElementById("search");
-  const parts = window.location.pathname.split("/");
-  const lastPart = parts[parts.length - 1];
-  const replacedText = lastPart.replace(/\+/g, " ");
-  searchBar.value = replacedText;
-  search(replacedText);
 }
 
 let lastValue = "";
@@ -381,6 +383,7 @@ function switchView() {
     viewMode.src = "/media/image.png";
   }
   saveSettings();
+  window.location.reload();
 }
 
 // TODO: Finish right click menu, using the loadouts var
